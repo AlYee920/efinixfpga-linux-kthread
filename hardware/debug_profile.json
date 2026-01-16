@@ -1,0 +1,189 @@
+{
+    "debug_cores": [
+        {
+            "name": "vio0",
+            "type": "vio",
+            "uuid": "55313b06793346d69c217ff8b49035d1",
+            "probes": [
+                {
+                    "name": "q0_ltssm_state",
+                    "width": 6,
+                    "init": null
+                },
+                {
+                    "name": "q0_link_status",
+                    "width": 2,
+                    "init": null
+                },
+                {
+                    "name": "q0_pipe_p00_rate",
+                    "width": 2,
+                    "init": null
+                },
+                {
+                    "name": "q0_cmn_ready",
+                    "width": 1,
+                    "init": null
+                },
+                {
+                    "name": "q0_TARGET_AXI_AWSIZE",
+                    "width": 3,
+                    "init": null
+                },
+                {
+                    "name": "q0_TARGET_AXI_AWADDR",
+                    "width": 64,
+                    "init": null
+                },
+                {
+                    "name": "q0_TARGET_AXI_WDATA",
+                    "width": 256,
+                    "init": null
+                },
+                {
+                    "name": "q0_TARGET_AXI_ARSIZE",
+                    "width": 3,
+                    "init": null
+                },
+                {
+                    "name": "q0_TARGET_AXI_ARLEN",
+                    "width": 8,
+                    "init": null
+                },
+                {
+                    "name": "q0_TARGET_AXI_ARADDR",
+                    "width": 64,
+                    "init": null
+                },
+                {
+                    "name": "q0_TARGET_AXI_RDATA",
+                    "width": 256,
+                    "init": "0x202020202020202020202020646c726f57206f6c6c6548203a3537336954"
+                }
+            ]
+        },
+        {
+            "name": "la0",
+            "type": "la",
+            "uuid": "355c26a697d84657a1e74f942ac9c603",
+            "probes": [
+                {
+                    "name": "q0_TARGET_AXI_AWADDR",
+                    "width": 64,
+                    "probe_type": 1
+                },
+                {
+                    "name": "q0_TARGET_AXI_AWLEN",
+                    "width": 8,
+                    "probe_type": 1
+                },
+                {
+                    "name": "q0_TARGET_AXI_AWSIZE",
+                    "width": 3,
+                    "probe_type": 1
+                },
+                {
+                    "name": "q0_TARGET_AXI_AWVALID",
+                    "width": 1,
+                    "probe_type": 1
+                },
+                {
+                    "name": "q0_TARGET_AXI_AWUSER",
+                    "width": 88,
+                    "probe_type": 1
+                },
+                {
+                    "name": "q0_TARGET_AXI_WDATA",
+                    "width": 256,
+                    "probe_type": 1
+                },
+                {
+                    "name": "q0_TARGET_AXI_WVALID",
+                    "width": 1,
+                    "probe_type": 1
+                },
+                {
+                    "name": "q0_TARGET_AXI_WSTRB",
+                    "width": 32,
+                    "probe_type": 1
+                },
+                {
+                    "name": "q0_TARGET_AXI_WLAST",
+                    "width": 1,
+                    "probe_type": 1
+                },
+                {
+                    "name": "q0_TARGET_AXI_BREADY",
+                    "width": 1,
+                    "probe_type": 1
+                },
+                {
+                    "name": "q0_TARGET_AXI_BVALID",
+                    "width": 1,
+                    "probe_type": 1
+                },
+                {
+                    "name": "q0_TARGET_AXI_BRESP",
+                    "width": 2,
+                    "probe_type": 1
+                },
+                {
+                    "name": "q0_TARGET_AXI_ARADDR",
+                    "width": 64,
+                    "probe_type": 1
+                },
+                {
+                    "name": "q0_TARGET_AXI_ARVALID",
+                    "width": 1,
+                    "probe_type": 1
+                },
+                {
+                    "name": "q0_TARGET_AXI_ARREADY",
+                    "width": 1,
+                    "probe_type": 1
+                },
+                {
+                    "name": "q0_TARGET_AXI_ARUSER",
+                    "width": 88,
+                    "probe_type": 1
+                },
+                {
+                    "name": "q0_TARGET_AXI_ARSIZE",
+                    "width": 3,
+                    "probe_type": 1
+                },
+                {
+                    "name": "q0_TARGET_AXI_ARLEN",
+                    "width": 8,
+                    "probe_type": 1
+                },
+                {
+                    "name": "q0_TARGET_AXI_RVALID",
+                    "width": 1,
+                    "probe_type": 1
+                },
+                {
+                    "name": "q0_TARGET_AXI_RDATA",
+                    "width": 256,
+                    "probe_type": 1
+                },
+                {
+                    "name": "q0_TARGET_AXI_RLAST",
+                    "width": 1,
+                    "probe_type": 1
+                }
+            ],
+            "data_depth": 8192,
+            "trigin_en": false,
+            "trigout_en": false,
+            "capture_control": false,
+            "input_pipeline": 1,
+            "auto_inserted": false
+        }
+    ],
+    "session": {
+        "debug_widget": [],
+        "wizard": {}
+    },
+    "jtag_user": "USER1"
+}

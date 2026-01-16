@@ -12,6 +12,7 @@ MODULE_DESCRIPTION("A simple LKM for a PCIe read request");
 
 #define VENDOR_ID 0x1f7a
 #define DEVICE_ID 0x0100
+// #define RUN_ONCE
 
 // PCIe device
 static struct pci_dev *ptr;
@@ -26,22 +27,33 @@ static int writer_thread_fn(void *data)
 {
 	u32 val = 0xdead0000;
 	int i;
-	// while (!kthread_should_stop() && atomic_read(&run_flag)) {
-	// 	iowrite32(val, selected_bar);
+// while (!kthread_should_stop() && atomic_read(&run_flag)) {
+// 	iowrite32(val, selected_bar);
 
-	// 	/* Ensure write ordering on PCIe */
-	// 	wmb();
+// 	/* Ensure write ordering on PCIe */
+// 	wmb();
 
-	// 	val++;
-	// 	udelay(10);
-	// }
+// 	val++;
+// 	udelay(10);
+// }
+#ifdef RUN_ONCE
 	for (i = 0; i < 16 && !kthread_should_stop(); i++)
 	{
-		iowrite32(val, selected_bar + i*0x20);
+		iowrite32(val, selected_bar + i * 0x20);
 		pr_info("efx_pcie: write_mem_and_print: %x\n", val);
 		val++;
 	}
-	//usleep_range(10, 50);
+#else
+
+	while (!kthread_should_stop())
+	{
+		iowrite32(val, selected_bar + i * 0x20);
+		val++;
+		//udelay(1);
+	}
+
+#endif
+
 	return 0;
 }
 
@@ -58,11 +70,17 @@ static int reader_thread_fn(void *data)
 	// 	pr_info("efx_pcie: read value = 0x%08x\n", val);
 	// 	udelay(20);
 	// }
-
-	val = ioread32(selected_bar+0x1000);
+#ifdef RUN_ONCE
+	val = ioread32(selected_bar + 0x1000);
 	pr_info("efx_pcie: read_mem_and_print: %x\n", val);
-	//usleep_range(10, 50);
-
+	// usleep_range(10, 50);
+#else
+	while (!kthread_should_stop())
+	{
+		val = ioread32(selected_bar + 0x1000);
+		//udelay(1);
+	}
+#endif
 	return 0;
 }
 
@@ -152,7 +170,7 @@ static int __init my_init(void)
 		goto err_out;
 	}
 	kthread_bind(writer_task, 1);
-	
+
 	reader_task = kthread_create(reader_thread_fn, NULL, "efx_reader");
 	if (IS_ERR(reader_task))
 	{
@@ -182,9 +200,22 @@ static void __exit my_exit(void)
 	int i;
 	printk("efx_pcie - exit\n");
 
+#ifdef RUN_ONCE
 	writer_task = NULL;
-
 	reader_task = NULL;
+#else
+	if (writer_task)
+	{
+		kthread_stop(writer_task);
+		writer_task = NULL;
+	}
+
+	if (reader_task)
+	{
+		kthread_stop(reader_task);
+		reader_task = NULL;
+	}
+#endif
 
 	if (selected_bar)
 		pci_iounmap(ptr, selected_bar);

@@ -21,7 +21,9 @@ edb_top edb_top_inst (
     .vio0_q0_TARGET_AXI_ARSIZE( q0_TARGET_AXI_ARSIZE ),
     .vio0_q0_TARGET_AXI_ARLEN( q0_TARGET_AXI_ARLEN ),
     .vio0_q0_TARGET_AXI_ARADDR( q0_TARGET_AXI_ARADDR ),
+    .vio0_err_cnt   ( err_cnt ),
     .vio0_q0_TARGET_AXI_RDATA( q0_TARGET_AXI_RDATA ),
+    .vio0_err_rst   ( err_rst ),
     .la0_clk            ( $INSERT_YOUR_CLOCK_NAME ),
     .la0_q0_TARGET_AXI_AWADDR       ( q0_TARGET_AXI_AWADDR ),
     .la0_q0_TARGET_AXI_AWLEN        ( q0_TARGET_AXI_AWLEN ),
@@ -43,7 +45,8 @@ edb_top edb_top_inst (
     .la0_q0_TARGET_AXI_ARLEN        ( q0_TARGET_AXI_ARLEN ),
     .la0_q0_TARGET_AXI_RVALID       ( q0_TARGET_AXI_RVALID ),
     .la0_q0_TARGET_AXI_RDATA        ( q0_TARGET_AXI_RDATA ),
-    .la0_q0_TARGET_AXI_RLAST        ( q0_TARGET_AXI_RLAST )
+    .la0_q0_TARGET_AXI_RLAST        ( q0_TARGET_AXI_RLAST ),
+    .la0_err_cnt        ( err_cnt )
 );
 
 ////////////////////////////////////////////////////////////////////////////////

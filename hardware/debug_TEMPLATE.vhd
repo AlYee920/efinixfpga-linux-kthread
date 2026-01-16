@@ -23,7 +23,9 @@ component edb_top
          vio0_q0_TARGET_AXI_ARSIZE : in  std_logic_vector(2 downto 0);
          vio0_q0_TARGET_AXI_ARLEN : in  std_logic_vector(7 downto 0);
          vio0_q0_TARGET_AXI_ARADDR : in  std_logic_vector(63 downto 0);
+         vio0_err_cnt  : in  std_logic_vector(15 downto 0);
          vio0_q0_TARGET_AXI_RDATA : out std_logic_vector(255 downto 0);
+         vio0_err_rst  : out std_logic;
          la0_clk       : in  std_logic;
          la0_q0_TARGET_AXI_AWADDR : in  std_logic_vector(63 downto 0);
          la0_q0_TARGET_AXI_AWLEN : in  std_logic_vector(7 downto 0);
@@ -45,7 +47,8 @@ component edb_top
          la0_q0_TARGET_AXI_ARLEN : in  std_logic_vector(7 downto 0);
          la0_q0_TARGET_AXI_RVALID : in  std_logic;
          la0_q0_TARGET_AXI_RDATA : in  std_logic_vector(255 downto 0);
-         la0_q0_TARGET_AXI_RLAST : in  std_logic
+         la0_q0_TARGET_AXI_RLAST : in  std_logic;
+         la0_err_cnt   : in  std_logic_vector(15 downto 0)
        );
 end component ;
 ---------------------- End COMPONENT Declaration ------------
@@ -78,7 +81,9 @@ port map (
            vio0_q0_TARGET_AXI_ARSIZE => q0_TARGET_AXI_ARSIZE,
            vio0_q0_TARGET_AXI_ARLEN => q0_TARGET_AXI_ARLEN,
            vio0_q0_TARGET_AXI_ARADDR => q0_TARGET_AXI_ARADDR,
+           vio0_err_cnt  => err_cnt,
            vio0_q0_TARGET_AXI_RDATA => q0_TARGET_AXI_RDATA,
+           vio0_err_rst  => err_rst,
            la0_clk      => #INSERT_YOUR_CLOCK_NAME,
            la0_q0_TARGET_AXI_AWADDR => q0_TARGET_AXI_AWADDR,
            la0_q0_TARGET_AXI_AWLEN  => q0_TARGET_AXI_AWLEN,
@@ -100,7 +105,8 @@ port map (
            la0_q0_TARGET_AXI_ARLEN  => q0_TARGET_AXI_ARLEN,
            la0_q0_TARGET_AXI_RVALID => q0_TARGET_AXI_RVALID,
            la0_q0_TARGET_AXI_RDATA  => q0_TARGET_AXI_RDATA,
-           la0_q0_TARGET_AXI_RLAST  => q0_TARGET_AXI_RLAST
+           la0_q0_TARGET_AXI_RLAST  => q0_TARGET_AXI_RLAST,
+           la0_err_cnt  => err_cnt
          );
 ------------------------ End INSTANTIATION Template ---------
 

@@ -3,7 +3,7 @@
 // Auto-generated Efinix JTAG debugger top module. Do not modify. 
 //
 
-`define DBG_MODULE_UUID _5edbf67a3a6f4bccb214052c610b7a3d
+`define DBG_MODULE_UUID _928b618a639d43f0aa02c4f1f0c86854
 `define CONCAT(a,b) a``b
 `define DBG_MODULE_NAME(name) `CONCAT(name,`DBG_MODULE_UUID)
 
@@ -35,7 +35,9 @@ module edb_top (
     input  [2:0] vio0_q0_TARGET_AXI_ARSIZE,
     input  [7:0] vio0_q0_TARGET_AXI_ARLEN,
     input  [63:0] vio0_q0_TARGET_AXI_ARADDR,
+    input  [15:0] vio0_err_cnt,
     output [255:0] vio0_q0_TARGET_AXI_RDATA,
+    output vio0_err_rst,
     input  la0_clk,
     input  [63:0] la0_q0_TARGET_AXI_AWADDR,
     input  [7:0] la0_q0_TARGET_AXI_AWLEN,
@@ -57,7 +59,8 @@ module edb_top (
     input  [7:0] la0_q0_TARGET_AXI_ARLEN,
     input  la0_q0_TARGET_AXI_RVALID,
     input  [255:0] la0_q0_TARGET_AXI_RDATA,
-    input  la0_q0_TARGET_AXI_RLAST
+    input  la0_q0_TARGET_AXI_RLAST,
+    input  [15:0] la0_err_cnt
 );
 
     localparam HUB_CS_WIDTH = 15;
@@ -116,9 +119,9 @@ module edb_top (
 
     // debug core instances
     `DBG_MODULE_NAME(edb_vio_top) #(
-        .NUM_PROBE_IN           ( 10 ),
-        .NUM_PROBE_OUT          ( 1 ),
-        .UUID           ( 128'h55313b06793346d69c217ff8b49035d1 ),
+        .NUM_PROBE_IN           ( 11 ),
+        .NUM_PROBE_OUT          ( 2 ),
+        .UUID           ( 128'h713e31004ff14bf1a8bccafdd783d164 ),
         .PROBE_IN0_WIDTH        ( 6 ),
         .PROBE_IN1_WIDTH        ( 2 ),
         .PROBE_IN2_WIDTH        ( 2 ),
@@ -129,8 +132,11 @@ module edb_top (
         .PROBE_IN7_WIDTH        ( 3 ),
         .PROBE_IN8_WIDTH        ( 8 ),
         .PROBE_IN9_WIDTH        ( 64 ),
+        .PROBE_IN10_WIDTH       ( 16 ),
         .PROBE_OUT0_WIDTH       ( 256 ),
-        .PROBE_OUT0_INIT_VAL    ( 'h202020202020202020202020646c726f57206f6c6c6548203a3537336954 )
+        .PROBE_OUT1_WIDTH       ( 1 ),
+        .PROBE_OUT0_INIT_VAL    ( 'h202020202020202020202020646c726f57206f6c6c6548203a3537336954 ),
+        .PROBE_OUT1_INIT_VAL    ( 'h0 )
     ) vio0 (
         .bscan_CAPTURE          ( bscan_CAPTURE ),
         .bscan_DRCK             ( bscan_DRCK ),
@@ -158,7 +164,7 @@ module edb_top (
         .probe_in7          ( vio0_q0_TARGET_AXI_ARSIZE ),
         .probe_in8          ( vio0_q0_TARGET_AXI_ARLEN ),
         .probe_in9          ( vio0_q0_TARGET_AXI_ARADDR ),
-        .probe_in10         ( 1'b0 ),
+        .probe_in10         ( vio0_err_cnt ),
         .probe_in11         ( 1'b0 ),
         .probe_in12         ( 1'b0 ),
         .probe_in13         ( 1'b0 ),
@@ -213,7 +219,7 @@ module edb_top (
         .probe_in62         ( 1'b0 ),
         .probe_in63         ( 1'b0 ),
         .probe_out0         ( vio0_q0_TARGET_AXI_RDATA ),
-        .probe_out1         (  ),
+        .probe_out1         ( vio0_err_rst ),
         .probe_out2         (  ),
         .probe_out3         (  ),
         .probe_out4         (  ),
@@ -279,13 +285,13 @@ module edb_top (
     );
 
     `DBG_MODULE_NAME(edb_la_top) #(
-        .NUM_PROBES         ( 21 ),
+        .NUM_PROBES         ( 22 ),
         .DATA_DEPTH         ( 8192 ),
         .TRIGIN_EN          ( 0 ),
         .TRIGOUT_EN         ( 0 ),
         .INPUT_PIPE_STAGES      ( 1 ),
         .CAPTURE_CONTROL    ( 0 ),
-        .UUID   ( 128'h355c26a697d84657a1e74f942ac9c603 ),
+        .UUID   ( 128'hfb7e66af134e4f7b8b2468dfcdc64f95 ),
         .CNDTNL_STRG_EN     ( 0 ),
         .PROBE0_WIDTH       ( 64 ),
         .PROBE0_TYPE        ( 1 ),
@@ -328,7 +334,9 @@ module edb_top (
         .PROBE19_WIDTH      ( 256 ),
         .PROBE19_TYPE       ( 1 ),
         .PROBE20_WIDTH      ( 1 ),
-        .PROBE20_TYPE       ( 1 )
+        .PROBE20_TYPE       ( 1 ),
+        .PROBE21_WIDTH      ( 16 ),
+        .PROBE21_TYPE       ( 1 )
     ) la0 (
         .bscan_CAPTURE                  ( bscan_CAPTURE ),
         .bscan_DRCK                     ( bscan_DRCK ),
@@ -370,7 +378,8 @@ module edb_top (
         .probe17                    ( la0_q0_TARGET_AXI_ARLEN ),
         .probe18                    ( la0_q0_TARGET_AXI_RVALID ),
         .probe19                    ( la0_q0_TARGET_AXI_RDATA ),
-        .probe20                    ( la0_q0_TARGET_AXI_RLAST )
+        .probe20                    ( la0_q0_TARGET_AXI_RLAST ),
+        .probe21                    ( la0_err_cnt )
     );
 
     `DBG_MODULE_NAME(debug_hub) debug_hub_inst (

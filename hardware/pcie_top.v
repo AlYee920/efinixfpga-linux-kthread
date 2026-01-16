@@ -251,6 +251,19 @@ begin
   end
 end
 
+wire        err_rst;
+wire [15:0] err_cnt;
+
+error_checker #(
+.CNT_WIDTH (16)
+) err_chk_inst1 (
+.clk        (axiclk), 
+.rstn       (~err_rst),
+.data_in    (q0_TARGET_AXI_WDATA[15:0]),
+.data_valid (q0_TARGET_AXI_WVALID),
+.err_count  (err_cnt)
+);
+
 //APB INBOUND CONFIGURATOR
 pcie_apb_master #(
     .ROM_MIF        ("pcie_inbound_mif.mem" ),
@@ -301,6 +314,9 @@ edb_top edb_top_inst(
     .vio0_q0_TARGET_AXI_ARADDR    ( q0_TARGET_AXI_ARADDR     ),
     .vio0_q0_TARGET_AXI_RDATA     ( q0_TARGET_AXI_RDATA      ),
     
+    .vio0_err_rst (err_rst),
+    .vio0_err_cnt (err_cnt),
+    
     .la0_clk                  (axiclk),
     .la0_q0_TARGET_AXI_AWADDR (q0_TARGET_AXI_AWADDR ),
     .la0_q0_TARGET_AXI_AWLEN  (q0_TARGET_AXI_AWLEN  ),
@@ -324,7 +340,9 @@ edb_top edb_top_inst(
     .la0_q0_TARGET_AXI_RDATA        ( q0_TARGET_AXI_RDATA      ),
     
     .la0_q0_TARGET_AXI_ARUSER   (q0_TARGET_AXI_ARUSER),
-    .la0_q0_TARGET_AXI_AWUSER   (q0_TARGET_AXI_AWUSER)
+    .la0_q0_TARGET_AXI_AWUSER   (q0_TARGET_AXI_AWUSER),
+    
+    .la0_err_cnt (err_cnt)
 );
 
 endmodule

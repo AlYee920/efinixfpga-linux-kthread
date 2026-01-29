@@ -3,7 +3,7 @@
         {
             "name": "vio0",
             "type": "vio",
-            "uuid": "713e31004ff14bf1a8bccafdd783d164",
+            "uuid": "eec20f663d8d4c6587de2dcee622c7c7",
             "probes": [
                 {
                     "name": "q0_ltssm_state",
@@ -75,7 +75,7 @@
         {
             "name": "la0",
             "type": "la",
-            "uuid": "fb7e66af134e4f7b8b2468dfcdc64f95",
+            "uuid": "edf8a860db644007b4660e84012a6bc8",
             "probes": [
                 {
                     "name": "q0_TARGET_AXI_AWADDR",
@@ -186,14 +186,153 @@
                     "name": "err_cnt",
                     "width": 16,
                     "probe_type": 1
+                },
+                {
+                    "name": "q0_MASTER_AXI_AWADDR",
+                    "width": 64,
+                    "probe_type": 1
+                },
+                {
+                    "name": "q0_MASTER_AXI_AWREADY",
+                    "width": 1,
+                    "probe_type": 1
+                },
+                {
+                    "name": "q0_MASTER_AXI_AWVALID",
+                    "width": 1,
+                    "probe_type": 3
+                },
+                {
+                    "name": "q0_MASTER_AXI_WDATA",
+                    "width": 256,
+                    "probe_type": 1
+                },
+                {
+                    "name": "q0_MASTER_AXI_WREADY",
+                    "width": 1,
+                    "probe_type": 1
+                },
+                {
+                    "name": "q0_MASTER_AXI_WVALID",
+                    "width": 1,
+                    "probe_type": 1
+                },
+                {
+                    "name": "q0_MASTER_AXI_WLAST",
+                    "width": 1,
+                    "probe_type": 1
+                },
+                {
+                    "name": "q0_MASTER_AXI_BVALID",
+                    "width": 1,
+                    "probe_type": 1
+                },
+                {
+                    "name": "q0_MASTER_AXI_BRESP",
+                    "width": 2,
+                    "probe_type": 1
+                },
+                {
+                    "name": "q0_MASTER_AXI_BREADY",
+                    "width": 1,
+                    "probe_type": 1
+                },
+                {
+                    "name": "state",
+                    "width": 8,
+                    "probe_type": 1
                 }
             ],
-            "data_depth": 8192,
+            "data_depth": 4096,
             "trigin_en": false,
             "trigout_en": false,
             "capture_control": false,
             "input_pipeline": 1,
             "auto_inserted": false
+        },
+        {
+            "name": "vio1",
+            "type": "vio",
+            "uuid": "403b10e7d2ae408c8e734c9aef239e0d",
+            "probes": [
+                {
+                    "name": "q0_INTERRUPT_SIDEBAND_SIGNALS",
+                    "width": 28,
+                    "init": null
+                },
+                {
+                    "name": "q0_LOCAL_INTERRUPT",
+                    "width": 1,
+                    "init": null
+                },
+                {
+                    "name": "AXI_ADDR",
+                    "width": 64,
+                    "init": "0x0"
+                },
+                {
+                    "name": "AXI_DATA",
+                    "width": 256,
+                    "init": "0x0"
+                },
+                {
+                    "name": "AXI_WSTRB",
+                    "width": 32,
+                    "init": "0x0"
+                },
+                {
+                    "name": "AXI_OPS",
+                    "width": 1,
+                    "init": "0x0"
+                },
+                {
+                    "name": "AXI_START",
+                    "width": 1,
+                    "init": "0x0"
+                },
+                {
+                    "name": "VIO_AXI_AWUSER",
+                    "width": 88,
+                    "init": "0x8000000000000000000002"
+                },
+                {
+                    "name": "MSI_TEST_INIT",
+                    "width": 1,
+                    "init": "0x0"
+                }
+            ]
+        },
+        {
+            "name": "apbvio",
+            "type": "vio",
+            "uuid": "d0a63bbaa37f4b45a7760cf1d59f2688",
+            "probes": [
+                {
+                    "name": "apb_write",
+                    "width": 1,
+                    "init": "0x0"
+                },
+                {
+                    "name": "apb_paddr",
+                    "width": 24,
+                    "init": "0x0"
+                },
+                {
+                    "name": "apb_pwdata",
+                    "width": 32,
+                    "init": "0x0"
+                },
+                {
+                    "name": "apb_start",
+                    "width": 1,
+                    "init": "0x0"
+                },
+                {
+                    "name": "apb_prdata",
+                    "width": 32,
+                    "init": null
+                }
+            ]
         }
     ],
     "session": {

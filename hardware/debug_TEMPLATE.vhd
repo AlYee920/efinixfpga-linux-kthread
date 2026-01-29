@@ -48,7 +48,34 @@ component edb_top
          la0_q0_TARGET_AXI_RVALID : in  std_logic;
          la0_q0_TARGET_AXI_RDATA : in  std_logic_vector(255 downto 0);
          la0_q0_TARGET_AXI_RLAST : in  std_logic;
-         la0_err_cnt   : in  std_logic_vector(15 downto 0)
+         la0_err_cnt   : in  std_logic_vector(15 downto 0);
+         la0_q0_MASTER_AXI_AWADDR : in  std_logic_vector(63 downto 0);
+         la0_q0_MASTER_AXI_AWREADY : in  std_logic;
+         la0_q0_MASTER_AXI_AWVALID : in  std_logic;
+         la0_q0_MASTER_AXI_WDATA : in  std_logic_vector(255 downto 0);
+         la0_q0_MASTER_AXI_WREADY : in  std_logic;
+         la0_q0_MASTER_AXI_WVALID : in  std_logic;
+         la0_q0_MASTER_AXI_WLAST : in  std_logic;
+         la0_q0_MASTER_AXI_BVALID : in  std_logic;
+         la0_q0_MASTER_AXI_BRESP : in  std_logic_vector(1 downto 0);
+         la0_q0_MASTER_AXI_BREADY : in  std_logic;
+         la0_state     : in  std_logic_vector(7 downto 0);
+         vio1_clk      : in  std_logic;
+         vio1_q0_INTERRUPT_SIDEBAND_SIGNALS : in  std_logic_vector(27 downto 0);
+         vio1_q0_LOCAL_INTERRUPT : in  std_logic;
+         vio1_AXI_ADDR : out std_logic_vector(63 downto 0);
+         vio1_AXI_DATA : out std_logic_vector(255 downto 0);
+         vio1_AXI_WSTRB : out std_logic_vector(31 downto 0);
+         vio1_AXI_OPS  : out std_logic;
+         vio1_AXI_START : out std_logic;
+         vio1_VIO_AXI_AWUSER : out std_logic_vector(87 downto 0);
+         vio1_MSI_TEST_INIT : out std_logic;
+         apbvio_clk    : in  std_logic;
+         apbvio_apb_prdata : in  std_logic_vector(31 downto 0);
+         apbvio_apb_write : out std_logic;
+         apbvio_apb_paddr : out std_logic_vector(23 downto 0);
+         apbvio_apb_pwdata : out std_logic_vector(31 downto 0);
+         apbvio_apb_start : out std_logic
        );
 end component ;
 ---------------------- End COMPONENT Declaration ------------
@@ -106,7 +133,34 @@ port map (
            la0_q0_TARGET_AXI_RVALID => q0_TARGET_AXI_RVALID,
            la0_q0_TARGET_AXI_RDATA  => q0_TARGET_AXI_RDATA,
            la0_q0_TARGET_AXI_RLAST  => q0_TARGET_AXI_RLAST,
-           la0_err_cnt  => err_cnt
+           la0_err_cnt  => err_cnt,
+           la0_q0_MASTER_AXI_AWADDR => q0_MASTER_AXI_AWADDR,
+           la0_q0_MASTER_AXI_AWREADY    => q0_MASTER_AXI_AWREADY,
+           la0_q0_MASTER_AXI_AWVALID    => q0_MASTER_AXI_AWVALID,
+           la0_q0_MASTER_AXI_WDATA  => q0_MASTER_AXI_WDATA,
+           la0_q0_MASTER_AXI_WREADY => q0_MASTER_AXI_WREADY,
+           la0_q0_MASTER_AXI_WVALID => q0_MASTER_AXI_WVALID,
+           la0_q0_MASTER_AXI_WLAST  => q0_MASTER_AXI_WLAST,
+           la0_q0_MASTER_AXI_BVALID => q0_MASTER_AXI_BVALID,
+           la0_q0_MASTER_AXI_BRESP  => q0_MASTER_AXI_BRESP,
+           la0_q0_MASTER_AXI_BREADY => q0_MASTER_AXI_BREADY,
+           la0_state    => state,
+           vio1_clk      => #INSERT_YOUR_CLOCK_NAME,
+           vio1_q0_INTERRUPT_SIDEBAND_SIGNALS => q0_INTERRUPT_SIDEBAND_SIGNALS,
+           vio1_q0_LOCAL_INTERRUPT => q0_LOCAL_INTERRUPT,
+           vio1_AXI_ADDR => AXI_ADDR,
+           vio1_AXI_DATA => AXI_DATA,
+           vio1_AXI_WSTRB => AXI_WSTRB,
+           vio1_AXI_OPS  => AXI_OPS,
+           vio1_AXI_START => AXI_START,
+           vio1_VIO_AXI_AWUSER => VIO_AXI_AWUSER,
+           vio1_MSI_TEST_INIT => MSI_TEST_INIT,
+           apbvio_clk    => #INSERT_YOUR_CLOCK_NAME,
+           apbvio_apb_prdata => apb_prdata,
+           apbvio_apb_write => apb_write,
+           apbvio_apb_paddr => apb_paddr,
+           apbvio_apb_pwdata => apb_pwdata,
+           apbvio_apb_start => apb_start
          );
 ------------------------ End INSTANTIATION Template ---------
 

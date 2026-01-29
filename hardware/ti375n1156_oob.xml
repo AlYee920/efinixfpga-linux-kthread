@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<efx:project name="ti375n1156_oob" description="" last_change="1768552017" sw_version="2025.2.288" last_run_state="pass" last_run_flow="bitstream" config_result_in_sync="true" design_ood="sync" place_ood="sync" route_ood="sync" xmlns:efx="http://www.efinixinc.com/enf_proj" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.efinixinc.com/enf_proj enf_proj.xsd">
+<efx:project name="ti375n1156_oob" description="" last_change="1769605542" sw_version="2025.2.288" last_run_state="pass" last_run_flow="bitstream" config_result_in_sync="true" design_ood="sync" place_ood="sync" route_ood="sync" xmlns:efx="http://www.efinixinc.com/enf_proj" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.efinixinc.com/enf_proj enf_proj.xsd">
     <efx:device_info>
         <efx:family name="Titanium"/>
         <efx:device name="Ti375N1156"/>
@@ -11,6 +11,8 @@
         <efx:design_file name="debug_top.v" version="default" library="default"/>
         <efx:design_file name="pcie_apb_master.sv" version="default" library="default"/>
         <efx:design_file name="error_checker.v" version="default" library="default"/>
+        <efx:design_file name="axi_pcie_master.v" version="default" library="default"/>
+        <efx:design_file name="apbvio.v" version="default" library="default"/>
         <efx:top_vhdl_arch name=""/>
     </efx:design_info>
     <efx:constraint_info>
@@ -22,7 +24,11 @@
         <efx:misc_file name="pcie_inbound_mif.mem"/>
     </efx:misc_info>
     <efx:ooc_info/>
-    <efx:ip_info/>
+    <efx:ip_info>
+        <efx:ip instance_name="apb_interconnect" path="ip/apb_interconnect/settings.json" ooc="false">
+            <efx:ip_src_file name="apb_interconnect.sv"/>
+        </efx:ip>
+    </efx:ip_info>
     <efx:synthesis tool_name="efx_map">
         <efx:param name="work_dir" value="work_syn" value_type="e_string"/>
         <efx:param name="write_efx_verilog" value="on" value_type="e_bool"/>
@@ -65,6 +71,7 @@
         <efx:param name="enable-mark-debug" value="1" value_type="e_option"/>
         <efx:param name="suppress_info_msgs" value="off" value_type="e_bool"/>
         <efx:param name="suppress_warning_msgs" value="off" value_type="e_bool"/>
+        <efx:param name="include" value="ip/apb_interconnect" value_type="e_string"/>
     </efx:synthesis>
     <efx:place_and_route tool_name="efx_pnr">
         <efx:param name="work_dir" value="work_pnr" value_type="e_string"/>

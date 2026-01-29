@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<efxpt:design_db name="ti375n1156_oob" device_def="Ti375N1156" version="2025.2.288" db_version="20252999" last_change_date="Mon Jan 12 14:56:25 2026" xmlns:efxpt="http://www.efinixinc.com/peri_design_db" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.efinixinc.com/peri_design_db peri_design_db.xsd ">
+<efxpt:design_db name="ti375n1156_oob" device_def="Ti375N1156" version="2025.2.288" db_version="20252999" last_change_date="Wed Jan 28 19:50:21 2026" xmlns:efxpt="http://www.efinixinc.com/peri_design_db" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.efinixinc.com/peri_design_db peri_design_db.xsd ">
     <efxpt:device_info>
         <efxpt:iobank_info>
             <efxpt:iobank name="2A" iostd="1.8 V LVCMOS" is_dyn_voltage="false" mode_sel_name="2A_MODE_SEL"/>
@@ -112,7 +112,7 @@
         <efxpt:global_unused_config state="input with weak pullup"/>
     </efxpt:gpio_info>
     <efxpt:pll_info>
-        <efxpt:pll name="pllep" pll_def="PLL_BR1" ref_clock_name="" ref_clock_freq="33.3333" multiplier="4" pre_divider="1" post_divider="1" reset_name="" locked_name="" is_ipfrz="false" is_bypass_lock="true">
+        <efxpt:pll name="pllep" pll_def="PLL_BR1" ref_clock_name="" ref_clock_freq="33.3333" multiplier="4" pre_divider="1" post_divider="2" reset_name="" locked_name="" is_ipfrz="false" is_bypass_lock="true">
             <efxpt:adv_prop ref_clock_mode="external" ref_clock1_name="" ext_ref_clock_id="3" clksel_name="" feedback_clock_name="feedbackclk" feedback_mode="local"/>
             <efxpt:gen_pin>
                 <efxpt:pin name="" type_name="SHIFT_ENA" is_bus="false"/>
@@ -125,21 +125,21 @@
                 <efxpt:pin name="" type_name="SHIFT" is_bus="true"/>
                 <efxpt:pin name="" type_name="SHIFT_SEL" is_bus="true"/>
             </efxpt:gen_pin>
-            <efxpt:comp_output_clock name="feedbackclk" number="0" out_divider="30" is_dyn_phase="false" phase_setting="0" is_inverted="false" conn_type="gclk" clkmux_buf_name="">
+            <efxpt:comp_output_clock name="feedbackclk" number="0" out_divider="18" is_dyn_phase="false" phase_setting="0" is_inverted="false" conn_type="gclk" clkmux_buf_name="">
                 <efxpt:gen_pin/>
                 <efxpt:gen_param/>
             </efxpt:comp_output_clock>
-            <efxpt:comp_output_clock name="axiclk" number="1" out_divider="16" is_dyn_phase="false" phase_setting="0" is_inverted="false" conn_type="gclk" clkmux_buf_name="">
+            <efxpt:comp_output_clock name="axiclk" number="1" out_divider="19" is_dyn_phase="false" phase_setting="0" is_inverted="false" conn_type="gclk" clkmux_buf_name="">
                 <efxpt:gen_pin/>
                 <efxpt:gen_param>
-                    <efxpt:param name="HALF_DC_SHIFT_EN" value="false" value_type="bool"/>
-                    <efxpt:param name="PDIV" value="8" value_type="int"/>
+                    <efxpt:param name="HALF_DC_SHIFT_EN" value="true" value_type="bool"/>
+                    <efxpt:param name="PDIV" value="9" value_type="int"/>
                     <efxpt:param name="PROG_DUTY_CYCLE_EN" value="false" value_type="bool"/>
                     <efxpt:param name="REQUEST_DUTY_CYCLE" value="50.0000" value_type="float"/>
-                    <efxpt:param name="SWALLOWING_DIV" value="8" value_type="int"/>
+                    <efxpt:param name="SWALLOWING_DIV" value="10" value_type="int"/>
                 </efxpt:gen_param>
             </efxpt:comp_output_clock>
-            <efxpt:comp_output_clock name="apbclk" number="4" out_divider="40" is_dyn_phase="false" phase_setting="0" is_inverted="false" conn_type="gclk" clkmux_buf_name="">
+            <efxpt:comp_output_clock name="apbclk" number="4" out_divider="24" is_dyn_phase="false" phase_setting="0" is_inverted="false" conn_type="gclk" clkmux_buf_name="">
                 <efxpt:gen_pin/>
                 <efxpt:gen_param/>
             </efxpt:comp_output_clock>
@@ -196,19 +196,19 @@
                 <efxpt:param name="AXI_MASTER_EN" value="true" value_type="bool"/>
                 <efxpt:param name="AXI_SLAVE_ADDRESS" value="64" value_type="int"/>
                 <efxpt:param name="AXI_SLAVE_DATA_WIDTH" value="512" value_type="int"/>
-                <efxpt:param name="AXI_SLAVE_EN" value="false" value_type="bool"/>
+                <efxpt:param name="AXI_SLAVE_EN" value="true" value_type="bool"/>
                 <efxpt:param name="CFG_SNOOP_EN" value="false" value_type="bool"/>
                 <efxpt:param name="DEBUG_EN" value="false" value_type="bool"/>
                 <efxpt:param name="FPGA_DIV2_CLK_CONN_TYPE" value="rclk" value_type="str"/>
                 <efxpt:param name="HOT_PLUG_EN" value="false" value_type="bool"/>
-                <efxpt:param name="INTERRUPT_EN" value="false" value_type="bool"/>
-                <efxpt:param name="MSI_EN" value="false" value_type="bool"/>
+                <efxpt:param name="INTERRUPT_EN" value="true" value_type="bool"/>
+                <efxpt:param name="MSI_EN" value="true" value_type="bool"/>
                 <efxpt:param name="PCR_Q0_USER_PHY_RESET_N_EXPOSE" value="0" value_type="str"/>
                 <efxpt:param name="PERSTN_SOURCE" value="PERSTN0" value_type="str"/>
                 <efxpt:param name="PIPE_CONFIG_CMN__config_reg_0__ari_enable" value="false" value_type="bool"/>
-                <efxpt:param name="PIPE_CONFIG_CMN__config_reg_0__lane_count_in" value="x4" value_type="str"/>
+                <efxpt:param name="PIPE_CONFIG_CMN__config_reg_0__lane_count_in" value="x1" value_type="str"/>
                 <efxpt:param name="PIPE_CONFIG_CMN__config_reg_0__mode_select" value="Endpoint" value_type="str"/>
-                <efxpt:param name="PIPE_CONFIG_CMN__config_reg_0__pcie_generation_sel" value="Gen4" value_type="str"/>
+                <efxpt:param name="PIPE_CONFIG_CMN__config_reg_0__pcie_generation_sel" value="Gen1" value_type="str"/>
                 <efxpt:param name="PIPE_CONFIG_CMN__config_reg_0__sr_iov_enable" value="false" value_type="bool"/>
                 <efxpt:param name="PIPE_CONFIG_CMN__config_reg_2__pma_cmn_refclk1_termen" value="true" value_type="bool"/>
                 <efxpt:param name="PIPE_CONFIG_CMN__config_reg_2__pma_cmn_refclk_sel" value="External" value_type="str"/>
@@ -223,18 +223,18 @@
                 <efxpt:param name="REF_CLK_NAME" value="" value_type="str"/>
                 <efxpt:param name="STATUS_EN" value="true" value_type="bool"/>
                 <efxpt:param name="VENDOR_EN" value="false" value_type="bool"/>
-                <efxpt:param name="i_client_LM__i_pf_0_BAR_config_0_reg__BAR0A" value="64 KB" value_type="str"/>
+                <efxpt:param name="i_client_LM__i_pf_0_BAR_config_0_reg__BAR0A" value="64 MB" value_type="str"/>
                 <efxpt:param name="i_client_LM__i_pf_0_BAR_config_0_reg__BAR0C" value="32bit non prefetchable memory BAR" value_type="str"/>
                 <efxpt:param name="i_client_LM__i_pf_0_BAR_config_0_reg__BAR1A" value="4 KB" value_type="str"/>
-                <efxpt:param name="i_client_LM__i_pf_0_BAR_config_0_reg__BAR1C" value="32bit non prefetchable memory BAR" value_type="str"/>
+                <efxpt:param name="i_client_LM__i_pf_0_BAR_config_0_reg__BAR1C" value="Disabled" value_type="str"/>
                 <efxpt:param name="i_client_LM__i_pf_0_BAR_config_0_reg__BAR2A" value="4 KB" value_type="str"/>
-                <efxpt:param name="i_client_LM__i_pf_0_BAR_config_0_reg__BAR2C" value="32bit non prefetchable memory BAR" value_type="str"/>
+                <efxpt:param name="i_client_LM__i_pf_0_BAR_config_0_reg__BAR2C" value="Disabled" value_type="str"/>
                 <efxpt:param name="i_client_LM__i_pf_0_BAR_config_0_reg__BAR3A" value="4 KB" value_type="str"/>
-                <efxpt:param name="i_client_LM__i_pf_0_BAR_config_0_reg__BAR3C" value="32bit non prefetchable memory BAR" value_type="str"/>
+                <efxpt:param name="i_client_LM__i_pf_0_BAR_config_0_reg__BAR3C" value="Disabled" value_type="str"/>
                 <efxpt:param name="i_client_LM__i_pf_0_BAR_config_1_reg__BAR4A" value="4 KB" value_type="str"/>
-                <efxpt:param name="i_client_LM__i_pf_0_BAR_config_1_reg__BAR4C" value="32bit non prefetchable memory BAR" value_type="str"/>
+                <efxpt:param name="i_client_LM__i_pf_0_BAR_config_1_reg__BAR4C" value="Disabled" value_type="str"/>
                 <efxpt:param name="i_client_LM__i_pf_0_BAR_config_1_reg__BAR5A" value="4 KB" value_type="str"/>
-                <efxpt:param name="i_client_LM__i_pf_0_BAR_config_1_reg__BAR5C" value="32bit non prefetchable memory BAR" value_type="str"/>
+                <efxpt:param name="i_client_LM__i_pf_0_BAR_config_1_reg__BAR5C" value="Disabled" value_type="str"/>
                 <efxpt:param name="i_client_LM__i_pf_0_BAR_config_1_reg__ERBC" value="false" value_type="bool"/>
                 <efxpt:param name="i_client_LM__i_pf_0_vf_BAR_config_0_reg__VFBAR0A" value="4 KB" value_type="str"/>
                 <efxpt:param name="i_client_LM__i_pf_0_vf_BAR_config_0_reg__VFBAR0C" value="32bit non prefetchable memory BAR" value_type="str"/>
@@ -345,7 +345,7 @@
                 <efxpt:param name="i_client_PF0__i_dev_ser_num_1__DSND1" value="0x0" value_type="hex"/>
                 <efxpt:param name="i_client_PF0__i_func_dep_link_numVFs_reg__NVF" value="0" value_type="int"/>
                 <efxpt:param name="i_client_PF0__i_link_ctrl_status__SCC" value="false" value_type="bool"/>
-                <efxpt:param name="i_client_PF0__i_msi_ctrl_reg__MMC" value="1" value_type="str"/>
+                <efxpt:param name="i_client_PF0__i_msi_ctrl_reg__MMC" value="32" value_type="str"/>
                 <efxpt:param name="i_client_PF0__i_msix_ctrl__CID" value="0x11" value_type="hex"/>
                 <efxpt:param name="i_client_PF0__i_msix_ctrl__CP" value="0xc0" value_type="hex"/>
                 <efxpt:param name="i_client_PF0__i_msix_ctrl__MSIXTS" value="0x0" value_type="hex"/>
@@ -357,8 +357,8 @@
                 <efxpt:param name="i_client_PF0__i_revision_id_class_code__CC" value="0xff" value_type="hex"/>
                 <efxpt:param name="i_client_PF0__i_revision_id_class_code__PIB" value="0x0" value_type="hex"/>
                 <efxpt:param name="i_client_PF0__i_revision_id_class_code__RID" value="0x0" value_type="hex"/>
-                <efxpt:param name="i_client_PF0__i_revision_id_class_code__SCC" value="0x0" value_type="hex"/>
-                <efxpt:param name="i_client_PF0__i_subsystem_vendor_id_subsystem_i__SID" value="0x0" value_type="hex"/>
+                <efxpt:param name="i_client_PF0__i_revision_id_class_code__SCC" value="0x01" value_type="hex"/>
+                <efxpt:param name="i_client_PF0__i_subsystem_vendor_id_subsystem_i__SID" value="0x0001" value_type="hex"/>
                 <efxpt:param name="i_client_PF0__i_vendor_id_device_id__DID" value="0x100" value_type="hex"/>
                 <efxpt:param name="i_client_PF0__i_vendor_specific_header_reg__VI" value="0x1" value_type="hex"/>
                 <efxpt:param name="i_client_PF1__i_func_dep_link_numVFs_reg__NVF" value="0" value_type="int"/>
@@ -442,7 +442,7 @@
                 <efxpt:param name="pcr_q0_user_phy_reset_n_expose" value="false" value_type="bool"/>
                 <efxpt:param name="pcr_q1_bypass_cfgtop" value="false" value_type="bool"/>
                 <efxpt:param name="pcr_q1_user_phy_reset_n_expose" value="false" value_type="bool"/>
-                <efxpt:param name="ss_pcie_MPS" value="512 bytes" value_type="str"/>
+                <efxpt:param name="ss_pcie_MPS" value="128 bytes" value_type="str"/>
                 <efxpt:param name="ss_pcie_aspm" value="Disabled" value_type="str"/>
                 <efxpt:param name="ss_pcie_compliance_en" value="false" value_type="bool"/>
                 <efxpt:param name="ss_pcie_gen3_rx_preset" value="0x0" value_type="hex"/>
@@ -502,7 +502,7 @@
                 <efxpt:param name="ss_pcie_pf3_vf_tph_en" value="false" value_type="bool"/>
                 <efxpt:param name="ss_pcie_pf_num" value="1" value_type="int"/>
                 <efxpt:param name="ss_pcie_pmclk_divsel" value="DIV2" value_type="str"/>
-                <efxpt:param name="ss_pcie_sris_en" value="true" value_type="bool"/>
+                <efxpt:param name="ss_pcie_sris_en" value="false" value_type="bool"/>
                 <efxpt:param name="ss_plllc1_refclk_sel" value="Refclk 1" value_type="str"/>
                 <efxpt:param name="ss_refclk_onboard_osc" value="false" value_type="bool"/>
                 <efxpt:param name="ss_sim_enable" value="Speed up" value_type="str"/>
@@ -562,46 +562,46 @@
                 <efxpt:pin name="q0_TARGET_AXI_WSTRB_PAR" type_name="TARGET_AXI_WSTRB_PAR" is_bus="true"/>
                 <efxpt:pin name="q0_TARGET_AXI_WVALID" type_name="TARGET_AXI_WVALID" is_bus="false"/>
                 <efxpt:pin name="q0_TARGET_NON_POSTED_REJ" type_name="TARGET_NON_POSTED_REJ" is_bus="false"/>
-                <efxpt:pin name="" type_name="MASTER_AXI_ARADDR" is_bus="true"/>
-                <efxpt:pin name="" type_name="MASTER_AXI_ARID" is_bus="true"/>
-                <efxpt:pin name="" type_name="MASTER_AXI_ARLEN" is_bus="true"/>
-                <efxpt:pin name="" type_name="MASTER_AXI_ARREADY" is_bus="false"/>
-                <efxpt:pin name="" type_name="MASTER_AXI_ARSIZE" is_bus="true"/>
-                <efxpt:pin name="" type_name="MASTER_AXI_ARUSER" is_bus="true"/>
-                <efxpt:pin name="" type_name="MASTER_AXI_ARVALID" is_bus="false"/>
-                <efxpt:pin name="" type_name="MASTER_AXI_AWADDR" is_bus="true"/>
-                <efxpt:pin name="" type_name="MASTER_AXI_AWID" is_bus="true"/>
-                <efxpt:pin name="" type_name="MASTER_AXI_AWLEN" is_bus="true"/>
-                <efxpt:pin name="" type_name="MASTER_AXI_AWREADY" is_bus="false"/>
-                <efxpt:pin name="" type_name="MASTER_AXI_AWSIZE" is_bus="true"/>
-                <efxpt:pin name="" type_name="MASTER_AXI_AWUSER" is_bus="true"/>
-                <efxpt:pin name="" type_name="MASTER_AXI_AWVALID" is_bus="false"/>
-                <efxpt:pin name="" type_name="MASTER_AXI_BID" is_bus="true"/>
-                <efxpt:pin name="" type_name="MASTER_AXI_BID_PAR" is_bus="false"/>
-                <efxpt:pin name="" type_name="MASTER_AXI_BREADY" is_bus="false"/>
-                <efxpt:pin name="" type_name="MASTER_AXI_BRESP" is_bus="true"/>
-                <efxpt:pin name="" type_name="MASTER_AXI_BRESP_PAR" is_bus="false"/>
-                <efxpt:pin name="" type_name="MASTER_AXI_BUSER" is_bus="true"/>
-                <efxpt:pin name="" type_name="MASTER_AXI_BUSER_PAR" is_bus="false"/>
-                <efxpt:pin name="" type_name="MASTER_AXI_BVALID" is_bus="false"/>
-                <efxpt:pin name="" type_name="MASTER_AXI_RDATA" is_bus="true"/>
-                <efxpt:pin name="" type_name="MASTER_AXI_RDATA_PAR" is_bus="true"/>
-                <efxpt:pin name="" type_name="MASTER_AXI_RID" is_bus="true"/>
-                <efxpt:pin name="" type_name="MASTER_AXI_RID_PAR" is_bus="false"/>
-                <efxpt:pin name="" type_name="MASTER_AXI_RLAST" is_bus="false"/>
-                <efxpt:pin name="" type_name="MASTER_AXI_RREADY" is_bus="false"/>
-                <efxpt:pin name="" type_name="MASTER_AXI_RRESP" is_bus="true"/>
-                <efxpt:pin name="" type_name="MASTER_AXI_RRESP_PAR" is_bus="false"/>
-                <efxpt:pin name="" type_name="MASTER_AXI_RUSER" is_bus="true"/>
-                <efxpt:pin name="" type_name="MASTER_AXI_RUSER_PAR" is_bus="false"/>
-                <efxpt:pin name="" type_name="MASTER_AXI_RVALID" is_bus="false"/>
-                <efxpt:pin name="" type_name="MASTER_AXI_WDATA" is_bus="true"/>
-                <efxpt:pin name="" type_name="MASTER_AXI_WDATA_PAR" is_bus="true"/>
-                <efxpt:pin name="" type_name="MASTER_AXI_WLAST" is_bus="false"/>
-                <efxpt:pin name="" type_name="MASTER_AXI_WREADY" is_bus="false"/>
-                <efxpt:pin name="" type_name="MASTER_AXI_WSTRB" is_bus="true"/>
-                <efxpt:pin name="" type_name="MASTER_AXI_WSTRB_PAR" is_bus="true"/>
-                <efxpt:pin name="" type_name="MASTER_AXI_WVALID" is_bus="false"/>
+                <efxpt:pin name="q0_MASTER_AXI_ARADDR" type_name="MASTER_AXI_ARADDR" is_bus="true"/>
+                <efxpt:pin name="q0_MASTER_AXI_ARID" type_name="MASTER_AXI_ARID" is_bus="true"/>
+                <efxpt:pin name="q0_MASTER_AXI_ARLEN" type_name="MASTER_AXI_ARLEN" is_bus="true"/>
+                <efxpt:pin name="q0_MASTER_AXI_ARREADY" type_name="MASTER_AXI_ARREADY" is_bus="false"/>
+                <efxpt:pin name="q0_MASTER_AXI_ARSIZE" type_name="MASTER_AXI_ARSIZE" is_bus="true"/>
+                <efxpt:pin name="q0_MASTER_AXI_ARUSER" type_name="MASTER_AXI_ARUSER" is_bus="true"/>
+                <efxpt:pin name="q0_MASTER_AXI_ARVALID" type_name="MASTER_AXI_ARVALID" is_bus="false"/>
+                <efxpt:pin name="q0_MASTER_AXI_AWADDR" type_name="MASTER_AXI_AWADDR" is_bus="true"/>
+                <efxpt:pin name="q0_MASTER_AXI_AWID" type_name="MASTER_AXI_AWID" is_bus="true"/>
+                <efxpt:pin name="q0_MASTER_AXI_AWLEN" type_name="MASTER_AXI_AWLEN" is_bus="true"/>
+                <efxpt:pin name="q0_MASTER_AXI_AWREADY" type_name="MASTER_AXI_AWREADY" is_bus="false"/>
+                <efxpt:pin name="q0_MASTER_AXI_AWSIZE" type_name="MASTER_AXI_AWSIZE" is_bus="true"/>
+                <efxpt:pin name="q0_MASTER_AXI_AWUSER" type_name="MASTER_AXI_AWUSER" is_bus="true"/>
+                <efxpt:pin name="q0_MASTER_AXI_AWVALID" type_name="MASTER_AXI_AWVALID" is_bus="false"/>
+                <efxpt:pin name="q0_MASTER_AXI_BID" type_name="MASTER_AXI_BID" is_bus="true"/>
+                <efxpt:pin name="q0_MASTER_AXI_BID_PAR" type_name="MASTER_AXI_BID_PAR" is_bus="false"/>
+                <efxpt:pin name="q0_MASTER_AXI_BREADY" type_name="MASTER_AXI_BREADY" is_bus="false"/>
+                <efxpt:pin name="q0_MASTER_AXI_BRESP" type_name="MASTER_AXI_BRESP" is_bus="true"/>
+                <efxpt:pin name="q0_MASTER_AXI_BRESP_PAR" type_name="MASTER_AXI_BRESP_PAR" is_bus="false"/>
+                <efxpt:pin name="q0_MASTER_AXI_BUSER" type_name="MASTER_AXI_BUSER" is_bus="true"/>
+                <efxpt:pin name="q0_MASTER_AXI_BUSER_PAR" type_name="MASTER_AXI_BUSER_PAR" is_bus="false"/>
+                <efxpt:pin name="q0_MASTER_AXI_BVALID" type_name="MASTER_AXI_BVALID" is_bus="false"/>
+                <efxpt:pin name="q0_MASTER_AXI_RDATA" type_name="MASTER_AXI_RDATA" is_bus="true"/>
+                <efxpt:pin name="q0_MASTER_AXI_RDATA_PAR" type_name="MASTER_AXI_RDATA_PAR" is_bus="true"/>
+                <efxpt:pin name="q0_MASTER_AXI_RID" type_name="MASTER_AXI_RID" is_bus="true"/>
+                <efxpt:pin name="q0_MASTER_AXI_RID_PAR" type_name="MASTER_AXI_RID_PAR" is_bus="false"/>
+                <efxpt:pin name="q0_MASTER_AXI_RLAST" type_name="MASTER_AXI_RLAST" is_bus="false"/>
+                <efxpt:pin name="q0_MASTER_AXI_RREADY" type_name="MASTER_AXI_RREADY" is_bus="false"/>
+                <efxpt:pin name="q0_MASTER_AXI_RRESP" type_name="MASTER_AXI_RRESP" is_bus="true"/>
+                <efxpt:pin name="q0_MASTER_AXI_RRESP_PAR" type_name="MASTER_AXI_RRESP_PAR" is_bus="false"/>
+                <efxpt:pin name="q0_MASTER_AXI_RUSER" type_name="MASTER_AXI_RUSER" is_bus="true"/>
+                <efxpt:pin name="q0_MASTER_AXI_RUSER_PAR" type_name="MASTER_AXI_RUSER_PAR" is_bus="false"/>
+                <efxpt:pin name="q0_MASTER_AXI_RVALID" type_name="MASTER_AXI_RVALID" is_bus="false"/>
+                <efxpt:pin name="q0_MASTER_AXI_WDATA" type_name="MASTER_AXI_WDATA" is_bus="true"/>
+                <efxpt:pin name="q0_MASTER_AXI_WDATA_PAR" type_name="MASTER_AXI_WDATA_PAR" is_bus="true"/>
+                <efxpt:pin name="q0_MASTER_AXI_WLAST" type_name="MASTER_AXI_WLAST" is_bus="false"/>
+                <efxpt:pin name="q0_MASTER_AXI_WREADY" type_name="MASTER_AXI_WREADY" is_bus="false"/>
+                <efxpt:pin name="q0_MASTER_AXI_WSTRB" type_name="MASTER_AXI_WSTRB" is_bus="true"/>
+                <efxpt:pin name="q0_MASTER_AXI_WSTRB_PAR" type_name="MASTER_AXI_WSTRB_PAR" is_bus="true"/>
+                <efxpt:pin name="q0_MASTER_AXI_WVALID" type_name="MASTER_AXI_WVALID" is_bus="false"/>
                 <efxpt:pin name="" type_name="CONFIG_FUNCTION_NUM" is_bus="true"/>
                 <efxpt:pin name="" type_name="CONFIG_READ_DATA" is_bus="true"/>
                 <efxpt:pin name="" type_name="CONFIG_READ_DATA_PAR" is_bus="true"/>
@@ -644,8 +644,8 @@
                 <efxpt:pin name="" type_name="PRSNT_N" is_bus="false"/>
                 <efxpt:pin name="" type_name="PWR_CTRL" is_bus="false"/>
                 <efxpt:pin name="" type_name="PWR_INDICATOR" is_bus="true"/>
-                <efxpt:pin name="" type_name="INTERRUPT_SIDEBAND_SIGNALS" is_bus="true"/>
-                <efxpt:pin name="" type_name="LOCAL_INTERRUPT" is_bus="false"/>
+                <efxpt:pin name="q0_INTERRUPT_SIDEBAND_SIGNALS" type_name="INTERRUPT_SIDEBAND_SIGNALS" is_bus="true"/>
+                <efxpt:pin name="q0_LOCAL_INTERRUPT" type_name="LOCAL_INTERRUPT" is_bus="false"/>
                 <efxpt:pin name="" type_name="INTA_IN" is_bus="false"/>
                 <efxpt:pin name="" type_name="INTA_OUT" is_bus="false"/>
                 <efxpt:pin name="" type_name="INTB_IN" is_bus="false"/>

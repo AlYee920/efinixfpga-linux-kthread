@@ -1,0 +1,91 @@
+--------------------------------------------------------------------------------
+-- Copyright (C) 2013-2025 Efinix Inc. All rights reserved.              
+--
+-- This   document  contains  proprietary information  which   is        
+-- protected by  copyright. All rights  are reserved.  This notice       
+-- refers to original work by Efinix, Inc. which may be derivitive       
+-- of other work distributed under license of the authors.  In the       
+-- case of derivative work, nothing in this notice overrides the         
+-- original author's license agreement.  Where applicable, the           
+-- original license agreement is included in it's original               
+-- unmodified form immediately below this header.                        
+--                                                                       
+-- WARRANTY DISCLAIMER.                                                  
+--     THE  DESIGN, CODE, OR INFORMATION ARE PROVIDED “AS IS” AND        
+--     EFINIX MAKES NO WARRANTIES, EXPRESS OR IMPLIED WITH               
+--     RESPECT THERETO, AND EXPRESSLY DISCLAIMS ANY IMPLIED WARRANTIES,  
+--     INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF          
+--     MERCHANTABILITY, NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR    
+--     PURPOSE.  SOME STATES DO NOT ALLOW EXCLUSIONS OF AN IMPLIED       
+--     WARRANTY, SO THIS DISCLAIMER MAY NOT APPLY TO LICENSEE.           
+--                                                                       
+-- LIMITATION OF LIABILITY.                                              
+--     NOTWITHSTANDING ANYTHING TO THE CONTRARY, EXCEPT FOR BODILY       
+--     INJURY, EFINIX SHALL NOT BE LIABLE WITH RESPECT TO ANY SUBJECT    
+--     MATTER OF THIS AGREEMENT UNDER TORT, CONTRACT, STRICT LIABILITY   
+--     OR ANY OTHER LEGAL OR EQUITABLE THEORY (I) FOR ANY INDIRECT,      
+--     SPECIAL, INCIDENTAL, EXEMPLARY OR CONSEQUENTIAL DAMAGES OF ANY    
+--     CHARACTER INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS OF      
+--     GOODWILL, DATA OR PROFIT, WORK STOPPAGE, OR COMPUTER FAILURE OR   
+--     MALFUNCTION, OR IN ANY EVENT (II) FOR ANY AMOUNT IN EXCESS, IN    
+--     THE AGGREGATE, OF THE FEE PAID BY LICENSEE TO EFINIX HEREUNDER    
+--     (OR, IF THE FEE HAS BEEN WAIVED, $100), EVEN IF EFINIX SHALL HAVE 
+--     BEEN INFORMED OF THE POSSIBILITY OF SUCH DAMAGES.  SOME STATES DO 
+--     NOT ALLOW THE EXCLUSION OR LIMITATION OF INCIDENTAL OR            
+--     CONSEQUENTIAL DAMAGES, SO THIS LIMITATION AND EXCLUSION MAY NOT   
+--     APPLY TO LICENSEE.                                                
+--
+--------------------------------------------------------------------------------
+------------- Begin Cut here for COMPONENT Declaration ------
+component apb_interconnect is
+port (
+    clk : in std_logic;
+    rst_n : in std_logic;
+    apb_eval : out std_logic;
+    apb_penable_o : out std_logic;
+    apb_pwrite_o : out std_logic;
+    apb_psel_o : out std_logic;
+    apb_pready_i : in std_logic;
+    apb_pslverr_i : in std_logic;
+    s_apb_prdata_o : out std_logic_vector(63 downto 0);
+    grant_o : out std_logic_vector(1 downto 0);
+    apb_paddr_o : out std_logic_vector(23 downto 0);
+    apb_pwdata_o : out std_logic_vector(31 downto 0);
+    apb_prdata_i : in std_logic_vector(31 downto 0);
+    s_apb_psel_i : in std_logic_vector(1 downto 0);
+    s_apb_penable_i : in std_logic_vector(1 downto 0);
+    s_apb_pwrite_i : in std_logic_vector(1 downto 0);
+    s_apb_paddr_i : in std_logic_vector(47 downto 0);
+    s_apb_pwdata_i : in std_logic_vector(63 downto 0);
+    s_apb_pready_o : out std_logic_vector(1 downto 0);
+    s_apb_pslverr_o : out std_logic_vector(1 downto 0)
+);
+end component apb_interconnect;
+
+---------------------- End COMPONENT Declaration ------------
+------------- Begin Cut here for INSTANTIATION Template -----
+u_apb_interconnect : apb_interconnect
+port map (
+    clk => clk,
+    rst_n => rst_n,
+    apb_eval => apb_eval,
+    apb_penable_o => apb_penable_o,
+    apb_pwrite_o => apb_pwrite_o,
+    apb_psel_o => apb_psel_o,
+    apb_pready_i => apb_pready_i,
+    apb_pslverr_i => apb_pslverr_i,
+    s_apb_prdata_o => s_apb_prdata_o,
+    grant_o => grant_o,
+    apb_paddr_o => apb_paddr_o,
+    apb_pwdata_o => apb_pwdata_o,
+    apb_prdata_i => apb_prdata_i,
+    s_apb_psel_i => s_apb_psel_i,
+    s_apb_penable_i => s_apb_penable_i,
+    s_apb_pwrite_i => s_apb_pwrite_i,
+    s_apb_paddr_i => s_apb_paddr_i,
+    s_apb_pwdata_i => s_apb_pwdata_i,
+    s_apb_pready_o => s_apb_pready_o,
+    s_apb_pslverr_o => s_apb_pslverr_o
+);
+
+------------------------ End INSTANTIATION Template ---------

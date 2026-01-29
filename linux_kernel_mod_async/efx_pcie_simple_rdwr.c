@@ -4,6 +4,7 @@
 #include <linux/pci.h>
 #include <linux/kthread.h>
 #include <linux/delay.h>
+#include <linux/interrupt.h>
 
 /* Meta Information */
 MODULE_LICENSE("GPL");
@@ -23,19 +24,35 @@ static void __iomem *selected_bar;
 static struct task_struct *writer_task = NULL;
 static struct task_struct *reader_task = NULL;
 
+static int irq_vector_read = -1;
+static int irq_vector_write = -1;
+static uint intr_cnt = 0;
+
+static irqreturn_t msi_one_read(int irq, void *dev_id)
+{
+	u32 val;
+	val = ioread32(selected_bar + ((intr_cnt * 0x20) & 0xfffff));
+	intr_cnt++;
+	cpu_relax();
+	cond_resched();
+	return IRQ_HANDLED;
+}
+
+static irqreturn_t msi_burst_write(int irq, void *dev_id)
+{
+	u32 val, i;
+	for (i = 0; i < 16 && !kthread_should_stop(); i++)
+	{
+		iowrite32(val, selected_bar + i * 0x20);
+		val++;
+	}
+	return IRQ_HANDLED;
+}
+
 static int writer_thread_fn(void *data)
 {
 	u32 val = 0xdead0000;
 	int i;
-// while (!kthread_should_stop() && atomic_read(&run_flag)) {
-// 	iowrite32(val, selected_bar);
-
-// 	/* Ensure write ordering on PCIe */
-// 	wmb();
-
-// 	val++;
-// 	udelay(10);
-// }
 #ifdef RUN_ONCE
 	for (i = 0; i < 16 && !kthread_should_stop(); i++)
 	{
@@ -44,12 +61,14 @@ static int writer_thread_fn(void *data)
 		val++;
 	}
 #else
-
+	set_user_nice(current, -20);
 	while (!kthread_should_stop())
 	{
-		iowrite32(val, selected_bar + i * 0x20);
+
+		iowrite32(val, selected_bar + ((val * 0x20) & 0xfffff));
 		val++;
-		//udelay(1);
+		// udelay(1);
+		cond_resched();
 	}
 
 #endif
@@ -61,24 +80,20 @@ static int writer_thread_fn(void *data)
 static int reader_thread_fn(void *data)
 {
 	u32 val;
+	int i;
 
-	// while (!kthread_should_stop() && atomic_read(&run_flag)) {
-	// 	/* Ensure read observes latest writes */
-	// 	mb();
-	// 	val = ioread32(selected_bar);
+	set_user_nice(current, -20);
 
-	// 	pr_info("efx_pcie: read value = 0x%08x\n", val);
-	// 	udelay(20);
-	// }
 #ifdef RUN_ONCE
 	val = ioread32(selected_bar + 0x1000);
 	pr_info("efx_pcie: read_mem_and_print: %x\n", val);
-	// usleep_range(10, 50);
 #else
 	while (!kthread_should_stop())
 	{
 		val = ioread32(selected_bar + 0x1000);
-		//udelay(1);
+		// udelay(1);
+		cpu_relax();
+		cond_resched();
 	}
 #endif
 	return 0;
@@ -94,7 +109,7 @@ void dump_all_bar(void)
 		   ptr->vendor, ptr->device);
 
 	pci_read_config_word(ptr, PCI_COMMAND, &cmd);
-	printk(KERN_INFO "efx_pcie - PCI_COMMAND: 0x%04x (MMIO:%s IO:%s Mem:%s)\n",
+	printk(KERN_INFO "efx_pcie - PCI_COMMAND: 0x%04x (MMIO:%s IO:%s MASTER:%s)\n",
 		   cmd, (cmd & PCI_COMMAND_MEMORY) ? "ON" : "OFF",
 		   (cmd & PCI_COMMAND_IO) ? "ON" : "OFF", (cmd & PCI_COMMAND_MASTER) ? "ON" : "OFF");
 
@@ -127,6 +142,7 @@ static int __init my_init(void)
 	// Requesting the device
 	u16 val;
 	// int i;
+	int ret;
 
 	ptr = pci_get_device(VENDOR_ID, DEVICE_ID, ptr);
 	if (ptr == NULL)
@@ -161,8 +177,34 @@ static int __init my_init(void)
 
 	pr_info("efx_pcie: BAR0 mapped at %p\n", selected_bar);
 
-	/* Start concurrent threads */
+	/* ---------- Enable MSI ---------- */
+	ret = pci_alloc_irq_vectors(ptr, 1, 32, PCI_IRQ_MSI);
+	pr_info("efx_pcie: allocated %d MSI interrupt\n", ret);
+	if (ret < 0)
+	{
+		pr_err("efx_pcie: MSI allocation failed\n");
+		goto err_out;
+	}
 
+	irq_vector_read = pci_irq_vector(ptr, 0);
+	ret = request_irq(irq_vector_read, msi_one_read, 0, "efx_pcie_msi_read", ptr);
+	if (ret)
+	{
+		pr_err("efx_pcie_msi_read: request_irq failed : %d\n", ret);
+		goto err_out;
+	}
+	pr_info("efx_pcie: msi_one_read enabled on IRQ %d\n", irq_vector_read);
+
+	irq_vector_write = pci_irq_vector(ptr, 1);
+	ret = request_irq(irq_vector_write, msi_burst_write, 0, "efx_pcie_msi_write", ptr);
+	if (ret)
+	{
+		pr_err("efx_pcie_msi_write: request_irq failed : %d\n", ret);
+		goto err_out;
+	}
+	pr_info("efx_pcie: msi_burst_write enabled on IRQ %d\n", irq_vector_write);
+
+	/* Start concurrent threads */
 	writer_task = kthread_create(writer_thread_fn, NULL, "efx_writer");
 	if (IS_ERR(writer_task))
 	{
@@ -171,17 +213,16 @@ static int __init my_init(void)
 	}
 	kthread_bind(writer_task, 1);
 
-	reader_task = kthread_create(reader_thread_fn, NULL, "efx_reader");
-	if (IS_ERR(reader_task))
-	{
-		pr_err("efx_pcie: reader thread failed\n");
-		kthread_stop(writer_task);
-		goto err_out;
-	}
-	kthread_bind(reader_task, 2);
-
+	// reader_task = kthread_create(reader_thread_fn, NULL, "efx_reader");
+	// if (IS_ERR(reader_task))
+	// {
+	// 	pr_err("efx_pcie: reader thread failed\n");
+	// 	kthread_stop(writer_task);
+	// 	goto err_out;
+	// }
+	// kthread_bind(reader_task, 2);
 	wake_up_process(writer_task);
-	wake_up_process(reader_task);
+	// wake_up_process(reader_task);
 
 	return 0;
 
@@ -189,6 +230,16 @@ err_out:
 	pci_iounmap(ptr, selected_bar);
 	pci_release_region(ptr, 0);
 	pci_disable_device(ptr);
+	if (irq_vector_read >= 0)
+	{
+		free_irq(irq_vector_read, ptr);
+	}
+	if (irq_vector_write >= 0)
+	{
+		free_irq(irq_vector_write, ptr);
+	}
+	pci_free_irq_vectors(ptr);
+
 	return -EINVAL;
 }
 
@@ -219,6 +270,16 @@ static void __exit my_exit(void)
 
 	if (selected_bar)
 		pci_iounmap(ptr, selected_bar);
+
+	if (irq_vector_read >= 0)
+	{
+		free_irq(irq_vector_read, ptr);
+	}
+	if (irq_vector_write >= 0)
+	{
+		free_irq(irq_vector_write, ptr);
+	}
+	pci_free_irq_vectors(ptr);
 
 	for (i = 0; i < 6; i++)
 	{

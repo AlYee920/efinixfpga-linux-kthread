@@ -28,11 +28,14 @@ static int irq_vector_read = -1;
 static int irq_vector_write = -1;
 static uint intr_cnt = 0;
 
+static u32 g_val=0;
+
 static irqreturn_t msi_one_read(int irq, void *dev_id)
 {
 	u32 val;
 	val = ioread32(selected_bar + ((intr_cnt * 0x20) & 0xfffff));
 	intr_cnt++;
+	//pr_info("efx_pcie : MSI_one_read handled!");
 	cpu_relax();
 	cond_resched();
 	return IRQ_HANDLED;
@@ -40,12 +43,14 @@ static irqreturn_t msi_one_read(int irq, void *dev_id)
 
 static irqreturn_t msi_burst_write(int irq, void *dev_id)
 {
-	u32 val, i;
-	for (i = 0; i < 16 && !kthread_should_stop(); i++)
+	u32 i;
+	for (i = 0; i < 128 && !kthread_should_stop(); i++)
 	{
-		iowrite32(val, selected_bar + i * 0x20);
-		val++;
+		iowrite32(g_val, selected_bar + ((i * 0x20)&0xfffff));
+		g_val++;
+		cond_resched();
 	}
+	//pr_info("efx_pcie : MSI_burst_write handled!");
 	return IRQ_HANDLED;
 }
 
@@ -177,8 +182,13 @@ static int __init my_init(void)
 
 	pr_info("efx_pcie: BAR0 mapped at %p\n", selected_bar);
 
+// pci_enable_ats(ptr, PAGE_SHIFT);
+// pci_enable_pasid(ptr);
+
+
+
 	/* ---------- Enable MSI ---------- */
-	ret = pci_alloc_irq_vectors(ptr, 1, 32, PCI_IRQ_MSI);
+	ret = pci_alloc_irq_vectors(ptr, 2, 2, PCI_IRQ_MSI);
 	pr_info("efx_pcie: allocated %d MSI interrupt\n", ret);
 	if (ret < 0)
 	{
@@ -186,7 +196,7 @@ static int __init my_init(void)
 		goto err_out;
 	}
 
-	irq_vector_read = pci_irq_vector(ptr, 0);
+	irq_vector_read = pci_irq_vector(ptr, 1);
 	ret = request_irq(irq_vector_read, msi_one_read, 0, "efx_pcie_msi_read", ptr);
 	if (ret)
 	{
@@ -195,7 +205,7 @@ static int __init my_init(void)
 	}
 	pr_info("efx_pcie: msi_one_read enabled on IRQ %d\n", irq_vector_read);
 
-	irq_vector_write = pci_irq_vector(ptr, 1);
+	irq_vector_write = pci_irq_vector(ptr, 0);
 	ret = request_irq(irq_vector_write, msi_burst_write, 0, "efx_pcie_msi_write", ptr);
 	if (ret)
 	{
@@ -205,13 +215,13 @@ static int __init my_init(void)
 	pr_info("efx_pcie: msi_burst_write enabled on IRQ %d\n", irq_vector_write);
 
 	/* Start concurrent threads */
-	writer_task = kthread_create(writer_thread_fn, NULL, "efx_writer");
-	if (IS_ERR(writer_task))
-	{
-		pr_err("efx_pcie: writer thread failed\n");
-		goto err_out;
-	}
-	kthread_bind(writer_task, 1);
+	// writer_task = kthread_create(writer_thread_fn, NULL, "efx_writer");
+	// if (IS_ERR(writer_task))
+	// {
+	// 	pr_err("efx_pcie: writer thread failed\n");
+	// 	goto err_out;
+	// }
+	// kthread_bind(writer_task, 1);
 
 	// reader_task = kthread_create(reader_thread_fn, NULL, "efx_reader");
 	// if (IS_ERR(reader_task))
@@ -221,7 +231,7 @@ static int __init my_init(void)
 	// 	goto err_out;
 	// }
 	// kthread_bind(reader_task, 2);
-	wake_up_process(writer_task);
+	// wake_up_process(writer_task);
 	// wake_up_process(reader_task);
 
 	return 0;

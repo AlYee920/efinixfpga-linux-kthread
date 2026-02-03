@@ -53,6 +53,7 @@ component edb_top
          la0_q0_MASTER_AXI_AWREADY : in  std_logic;
          la0_q0_MASTER_AXI_AWVALID : in  std_logic;
          la0_q0_MASTER_AXI_WDATA : in  std_logic_vector(255 downto 0);
+         la0_q0_MASTER_AXI_WSTRB : in  std_logic_vector(31 downto 0);
          la0_q0_MASTER_AXI_WREADY : in  std_logic;
          la0_q0_MASTER_AXI_WVALID : in  std_logic;
          la0_q0_MASTER_AXI_WLAST : in  std_logic;
@@ -138,6 +139,7 @@ port map (
            la0_q0_MASTER_AXI_AWREADY    => q0_MASTER_AXI_AWREADY,
            la0_q0_MASTER_AXI_AWVALID    => q0_MASTER_AXI_AWVALID,
            la0_q0_MASTER_AXI_WDATA  => q0_MASTER_AXI_WDATA,
+           la0_q0_MASTER_AXI_WSTRB  => q0_MASTER_AXI_WSTRB,
            la0_q0_MASTER_AXI_WREADY => q0_MASTER_AXI_WREADY,
            la0_q0_MASTER_AXI_WVALID => q0_MASTER_AXI_WVALID,
            la0_q0_MASTER_AXI_WLAST  => q0_MASTER_AXI_WLAST,

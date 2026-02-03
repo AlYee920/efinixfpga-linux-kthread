@@ -51,6 +51,7 @@ edb_top edb_top_inst (
     .la0_q0_MASTER_AXI_AWREADY      ( q0_MASTER_AXI_AWREADY ),
     .la0_q0_MASTER_AXI_AWVALID      ( q0_MASTER_AXI_AWVALID ),
     .la0_q0_MASTER_AXI_WDATA        ( q0_MASTER_AXI_WDATA ),
+    .la0_q0_MASTER_AXI_WSTRB        ( q0_MASTER_AXI_WSTRB ),
     .la0_q0_MASTER_AXI_WREADY       ( q0_MASTER_AXI_WREADY ),
     .la0_q0_MASTER_AXI_WVALID       ( q0_MASTER_AXI_WVALID ),
     .la0_q0_MASTER_AXI_WLAST        ( q0_MASTER_AXI_WLAST ),

@@ -23,6 +23,9 @@ create_clock -period 7.500 -name feedbackclk [get_ports {feedbackclk}]
 create_clock -period 7.917 -name axiclk [get_ports {axiclk}]
 create_clock -period 10.000 -name apbclk [get_ports {apbclk}]
 
+set_clock_groups -asynchronous -group {apbclk}
+set_clock_groups -asynchronous -group {axiclk}
+
 # GPIO Constraints
 ####################
 

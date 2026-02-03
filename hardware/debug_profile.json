@@ -3,7 +3,7 @@
         {
             "name": "vio0",
             "type": "vio",
-            "uuid": "eec20f663d8d4c6587de2dcee622c7c7",
+            "uuid": "83113025e8ac4aefac278ea7eee891d1",
             "probes": [
                 {
                     "name": "q0_ltssm_state",
@@ -75,7 +75,7 @@
         {
             "name": "la0",
             "type": "la",
-            "uuid": "edf8a860db644007b4660e84012a6bc8",
+            "uuid": "b960fdabbcd3435d9d2c4ab30b400444",
             "probes": [
                 {
                     "name": "q0_TARGET_AXI_AWADDR",
@@ -200,11 +200,16 @@
                 {
                     "name": "q0_MASTER_AXI_AWVALID",
                     "width": 1,
-                    "probe_type": 3
+                    "probe_type": 1
                 },
                 {
                     "name": "q0_MASTER_AXI_WDATA",
                     "width": 256,
+                    "probe_type": 1
+                },
+                {
+                    "name": "q0_MASTER_AXI_WSTRB",
+                    "width": 32,
                     "probe_type": 1
                 },
                 {
@@ -253,7 +258,7 @@
         {
             "name": "vio1",
             "type": "vio",
-            "uuid": "403b10e7d2ae408c8e734c9aef239e0d",
+            "uuid": "463d4cec20794239b715e02d34216111",
             "probes": [
                 {
                     "name": "q0_INTERRUPT_SIDEBAND_SIGNALS",
@@ -305,7 +310,7 @@
         {
             "name": "apbvio",
             "type": "vio",
-            "uuid": "d0a63bbaa37f4b45a7760cf1d59f2688",
+            "uuid": "94bb29eb93d6494cb9fc4b1a393720bc",
             "probes": [
                 {
                     "name": "apb_write",

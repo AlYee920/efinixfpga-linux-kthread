@@ -14,6 +14,9 @@
 // 0.0 Initial rev
 //
 // *******************************
+`define DUAL_MSI_Test
+//`define AXI_VIO
+
 module top(
 //TB
 input   wire        in_user,
@@ -264,7 +267,8 @@ error_checker #(
 .err_count  (err_cnt)
 );
 
-wire [7:0] state_q0;
+
+wire [7:0]      state_q0;
 wire [87:0]     VIO_AXI_AWUSER;
 wire [63:0]     VIO_AXI_ADDR ;
 wire [255:0]    VIO_AXI_DATA ;
@@ -272,12 +276,15 @@ wire            VIO_AXI_OPS  ;
 wire            VIO_AXI_START;
 wire [31:0]     VIO_AXI_WSTRB;
 
+
+
+
 //AUTOMATED INTERRUPT TEST FOR MSI TRIGGERED READ
 wire MSI_TEST_INIT;
 wire MSI_TEST_TRIG;
 reg [7:0] MSI_TEST_CNT;
 
-assign MSI_TEST_TRIG = MSI_TEST_CNT[6];
+assign MSI_TEST_TRIG = MSI_TEST_CNT[7];
 always@(posedge axiclk or negedge MSI_TEST_INIT) begin
     if (~MSI_TEST_INIT) begin
         MSI_TEST_CNT <= 8'h0;
@@ -286,8 +293,11 @@ always@(posedge axiclk or negedge MSI_TEST_INIT) begin
         MSI_TEST_CNT <= MSI_TEST_CNT + 1'b1;
     end
 end
-
-axictrl_pcie_master q0_axim
+`ifdef AXI_VIO
+//==========================================================
+//      AXI MASTER VIO
+//==========================================================
+axi_pcie_master_vio q0_axim
 (
     .clk                 (axiclk                 ),
     .rstn                (in_user ),
@@ -336,13 +346,56 @@ axictrl_pcie_master q0_axim
     
     .VIO_AXI_AWUSER     (VIO_AXI_AWUSER),
     .VIO_AXI_ADDR        (VIO_AXI_ADDR ),
-    .VIO_AXI_DATA        (VIO_AXI_DATA ),
+    .VIO_AXI_WDATA        (VIO_AXI_DATA ),
     .VIO_AXI_OPS         (VIO_AXI_OPS  ),
     .VIO_AXI_WSTRB       (VIO_AXI_WSTRB),
     .VIO_AXI_START       (VIO_AXI_START | MSI_TEST_TRIG)
 );
+`endif
 
+`ifdef DUAL_MSI_Test
+msi_test_axi_master inst0
+(
+    .clk                 (axiclk                 ),
+    .rstn                (in_user ),
+    .state               (state_q0               ),
+    
+    .MASTER_AXI_ARADDR   (q0_MASTER_AXI_ARADDR   ),
+    .MASTER_AXI_ARID     (q0_MASTER_AXI_ARID     ),
+    .MASTER_AXI_ARLEN    (q0_MASTER_AXI_ARLEN    ),
+    .MASTER_AXI_ARREADY  (q0_MASTER_AXI_ARREADY  ),
+    .MASTER_AXI_ARSIZE   (q0_MASTER_AXI_ARSIZE   ),
+    .MASTER_AXI_ARUSER   (q0_MASTER_AXI_ARUSER   ),
+    .MASTER_AXI_ARVALID  (q0_MASTER_AXI_ARVALID  ),
+                         
+    .MASTER_AXI_AWADDR   (q0_MASTER_AXI_AWADDR   ),
+    .MASTER_AXI_AWID     (q0_MASTER_AXI_AWID     ),
+    .MASTER_AXI_AWLEN    (q0_MASTER_AXI_AWLEN    ),
+    .MASTER_AXI_AWREADY  (q0_MASTER_AXI_AWREADY  ),
+    .MASTER_AXI_AWSIZE   (q0_MASTER_AXI_AWSIZE   ),
+    .MASTER_AXI_AWUSER   (q0_MASTER_AXI_AWUSER   ),
+    .MASTER_AXI_AWVALID  (q0_MASTER_AXI_AWVALID  ),
+                         
+    .MASTER_AXI_BID      (q0_MASTER_AXI_BID      ),
+    .MASTER_AXI_BID_PAR  (q0_MASTER_AXI_BID_PAR  ),
+    .MASTER_AXI_BREADY   (q0_MASTER_AXI_BREADY   ),
+    .MASTER_AXI_BRESP    (q0_MASTER_AXI_BRESP    ),
+    .MASTER_AXI_BRESP_PAR(q0_MASTER_AXI_BRESP_PAR),
+    .MASTER_AXI_BVALID   (q0_MASTER_AXI_BVALID   ),
 
+    .MASTER_AXI_WDATA    (q0_MASTER_AXI_WDATA    ),
+    .MASTER_AXI_WDATA_PAR(q0_MASTER_AXI_WDATA_PAR),
+    .MASTER_AXI_WLAST    (q0_MASTER_AXI_WLAST    ),
+    .MASTER_AXI_WREADY   (q0_MASTER_AXI_WREADY   ),
+    .MASTER_AXI_WSTRB    (q0_MASTER_AXI_WSTRB    ),
+    .MASTER_AXI_WSTRB_PAR(q0_MASTER_AXI_WSTRB_PAR),
+    .MASTER_AXI_WVALID   (q0_MASTER_AXI_WVALID   ),
+    
+    .VIO_MSI_ADDR        (VIO_AXI_ADDR[31:0] ),
+    .VIO_MSI_DATA        (VIO_AXI_DATA[15:0] ),
+    .VIO_MSI_START       (VIO_AXI_START | MSI_TEST_TRIG)
+);
+`endif 
 //APB INBOUND CONFIGURATOR
 
 //PARITY FOR APB
@@ -538,6 +591,7 @@ edb_top edb_top_inst(
     .la0_q0_MASTER_AXI_AWREADY      ( q0_MASTER_AXI_AWREADY ),
     .la0_q0_MASTER_AXI_AWVALID      ( q0_MASTER_AXI_AWVALID ),
     .la0_q0_MASTER_AXI_WDATA        ( q0_MASTER_AXI_WDATA ),
+    .la0_q0_MASTER_AXI_WSTRB        ( q0_MASTER_AXI_WSTRB ),
     .la0_q0_MASTER_AXI_WREADY       ( q0_MASTER_AXI_WREADY ),
     .la0_q0_MASTER_AXI_WVALID       ( q0_MASTER_AXI_WVALID ),
     .la0_q0_MASTER_AXI_WLAST        ( q0_MASTER_AXI_WLAST ),

@@ -3,7 +3,7 @@
 // Auto-generated Efinix JTAG debugger top module. Do not modify. 
 //
 
-`define DBG_MODULE_UUID _33ed121456c848dea21ebd5da1333c17
+`define DBG_MODULE_UUID _7f6988cd77d24e7a99ad405816e58298
 `define CONCAT(a,b) a``b
 `define DBG_MODULE_NAME(name) `CONCAT(name,`DBG_MODULE_UUID)
 
@@ -65,6 +65,7 @@ module edb_top (
     input  la0_q0_MASTER_AXI_AWREADY,
     input  la0_q0_MASTER_AXI_AWVALID,
     input  [255:0] la0_q0_MASTER_AXI_WDATA,
+    input  [31:0] la0_q0_MASTER_AXI_WSTRB,
     input  la0_q0_MASTER_AXI_WREADY,
     input  la0_q0_MASTER_AXI_WVALID,
     input  la0_q0_MASTER_AXI_WLAST,
@@ -158,7 +159,7 @@ module edb_top (
     `DBG_MODULE_NAME(edb_vio_top) #(
         .NUM_PROBE_IN           ( 11 ),
         .NUM_PROBE_OUT          ( 2 ),
-        .UUID           ( 128'heec20f663d8d4c6587de2dcee622c7c7 ),
+        .UUID           ( 128'h83113025e8ac4aefac278ea7eee891d1 ),
         .PROBE_IN0_WIDTH        ( 6 ),
         .PROBE_IN1_WIDTH        ( 2 ),
         .PROBE_IN2_WIDTH        ( 2 ),
@@ -322,13 +323,13 @@ module edb_top (
     );
 
     `DBG_MODULE_NAME(edb_la_top) #(
-        .NUM_PROBES         ( 33 ),
+        .NUM_PROBES         ( 34 ),
         .DATA_DEPTH         ( 4096 ),
         .TRIGIN_EN          ( 0 ),
         .TRIGOUT_EN         ( 0 ),
         .INPUT_PIPE_STAGES      ( 1 ),
         .CAPTURE_CONTROL    ( 0 ),
-        .UUID   ( 128'hedf8a860db644007b4660e84012a6bc8 ),
+        .UUID   ( 128'hb960fdabbcd3435d9d2c4ab30b400444 ),
         .CNDTNL_STRG_EN     ( 0 ),
         .PROBE0_WIDTH       ( 64 ),
         .PROBE0_TYPE        ( 1 ),
@@ -379,10 +380,10 @@ module edb_top (
         .PROBE23_WIDTH      ( 1 ),
         .PROBE23_TYPE       ( 1 ),
         .PROBE24_WIDTH      ( 1 ),
-        .PROBE24_TYPE       ( 3 ),
+        .PROBE24_TYPE       ( 1 ),
         .PROBE25_WIDTH      ( 256 ),
         .PROBE25_TYPE       ( 1 ),
-        .PROBE26_WIDTH      ( 1 ),
+        .PROBE26_WIDTH      ( 32 ),
         .PROBE26_TYPE       ( 1 ),
         .PROBE27_WIDTH      ( 1 ),
         .PROBE27_TYPE       ( 1 ),
@@ -390,12 +391,14 @@ module edb_top (
         .PROBE28_TYPE       ( 1 ),
         .PROBE29_WIDTH      ( 1 ),
         .PROBE29_TYPE       ( 1 ),
-        .PROBE30_WIDTH      ( 2 ),
+        .PROBE30_WIDTH      ( 1 ),
         .PROBE30_TYPE       ( 1 ),
-        .PROBE31_WIDTH      ( 1 ),
+        .PROBE31_WIDTH      ( 2 ),
         .PROBE31_TYPE       ( 1 ),
-        .PROBE32_WIDTH      ( 8 ),
-        .PROBE32_TYPE       ( 1 )
+        .PROBE32_WIDTH      ( 1 ),
+        .PROBE32_TYPE       ( 1 ),
+        .PROBE33_WIDTH      ( 8 ),
+        .PROBE33_TYPE       ( 1 )
     ) la0 (
         .bscan_CAPTURE                  ( bscan_CAPTURE ),
         .bscan_DRCK                     ( bscan_DRCK ),
@@ -443,19 +446,20 @@ module edb_top (
         .probe23                    ( la0_q0_MASTER_AXI_AWREADY ),
         .probe24                    ( la0_q0_MASTER_AXI_AWVALID ),
         .probe25                    ( la0_q0_MASTER_AXI_WDATA ),
-        .probe26                    ( la0_q0_MASTER_AXI_WREADY ),
-        .probe27                    ( la0_q0_MASTER_AXI_WVALID ),
-        .probe28                    ( la0_q0_MASTER_AXI_WLAST ),
-        .probe29                    ( la0_q0_MASTER_AXI_BVALID ),
-        .probe30                    ( la0_q0_MASTER_AXI_BRESP ),
-        .probe31                    ( la0_q0_MASTER_AXI_BREADY ),
-        .probe32                    ( la0_state )
+        .probe26                    ( la0_q0_MASTER_AXI_WSTRB ),
+        .probe27                    ( la0_q0_MASTER_AXI_WREADY ),
+        .probe28                    ( la0_q0_MASTER_AXI_WVALID ),
+        .probe29                    ( la0_q0_MASTER_AXI_WLAST ),
+        .probe30                    ( la0_q0_MASTER_AXI_BVALID ),
+        .probe31                    ( la0_q0_MASTER_AXI_BRESP ),
+        .probe32                    ( la0_q0_MASTER_AXI_BREADY ),
+        .probe33                    ( la0_state )
     );
 
     `DBG_MODULE_NAME(edb_vio_top) #(
         .NUM_PROBE_IN           ( 2 ),
         .NUM_PROBE_OUT          ( 7 ),
-        .UUID           ( 128'h403b10e7d2ae408c8e734c9aef239e0d ),
+        .UUID           ( 128'h463d4cec20794239b715e02d34216111 ),
         .PROBE_IN0_WIDTH        ( 28 ),
         .PROBE_IN1_WIDTH        ( 1 ),
         .PROBE_OUT0_WIDTH       ( 64 ),
@@ -622,7 +626,7 @@ module edb_top (
     `DBG_MODULE_NAME(edb_vio_top) #(
         .NUM_PROBE_IN           ( 1 ),
         .NUM_PROBE_OUT          ( 4 ),
-        .UUID           ( 128'hd0a63bbaa37f4b45a7760cf1d59f2688 ),
+        .UUID           ( 128'h94bb29eb93d6494cb9fc4b1a393720bc ),
         .PROBE_IN0_WIDTH        ( 32 ),
         .PROBE_OUT0_WIDTH       ( 1 ),
         .PROBE_OUT1_WIDTH       ( 24 ),

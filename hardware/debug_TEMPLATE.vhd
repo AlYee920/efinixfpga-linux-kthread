@@ -64,6 +64,7 @@ component edb_top
          vio1_clk      : in  std_logic;
          vio1_q0_INTERRUPT_SIDEBAND_SIGNALS : in  std_logic_vector(27 downto 0);
          vio1_q0_LOCAL_INTERRUPT : in  std_logic;
+         vio1_MSI_RAND_DLY : in  std_logic_vector(31 downto 0);
          vio1_AXI_ADDR : out std_logic_vector(63 downto 0);
          vio1_AXI_DATA : out std_logic_vector(255 downto 0);
          vio1_AXI_WSTRB : out std_logic_vector(31 downto 0);
@@ -150,6 +151,7 @@ port map (
            vio1_clk      => #INSERT_YOUR_CLOCK_NAME,
            vio1_q0_INTERRUPT_SIDEBAND_SIGNALS => q0_INTERRUPT_SIDEBAND_SIGNALS,
            vio1_q0_LOCAL_INTERRUPT => q0_LOCAL_INTERRUPT,
+           vio1_MSI_RAND_DLY => MSI_RAND_DLY,
            vio1_AXI_ADDR => AXI_ADDR,
            vio1_AXI_DATA => AXI_DATA,
            vio1_AXI_WSTRB => AXI_WSTRB,

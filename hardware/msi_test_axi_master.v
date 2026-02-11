@@ -47,7 +47,10 @@ module msi_test_axi_master
     
     input   wire [31:0]     VIO_MSI_ADDR,
     input   wire [15:0]     VIO_MSI_DATA,
-    input   wire            VIO_MSI_START
+    input   wire            VIO_MSI_START,
+
+    output reg             MSI_LED,
+    output wire [31:0]     MSI_1_DLY
 );
 
 localparam  IDLE        = 8'b0000_0000,
@@ -88,6 +91,51 @@ always @(posedge clk or negedge rstn) begin
     end
 end
 
+//random counter
+localparam TEST_CNT_WIDTH = 10;
+reg [TEST_CNT_WIDTH-1:0]    test_cnt,rand_delay;
+reg delay_start,delay_start_1r, delay_done;
+
+wire delay_done_w;
+assign delay_done_w = (test_cnt == rand_delay);
+
+wire delay_start_trig;
+assign delay_start_trig = delay_start & (~delay_start_1r);
+
+always @(posedge clk or negedge rstn) begin                                        
+    if(!rstn) begin                               
+        test_cnt <= {TEST_CNT_WIDTH{1'b0}};
+        delay_done <= 1'b0;
+        MSI_LED <= 1'b0;
+    end
+    else if (delay_start) begin
+        test_cnt <= test_cnt + 1'b1;
+        delay_start_1r<=delay_start; 
+        if(delay_done_w) begin
+            test_cnt <= {TEST_CNT_WIDTH{1'b0}};
+            MSI_LED = ~MSI_LED; //toggle LED everytime demay complete
+        end
+    end                                     
+end
+
+wire [TEST_CNT_WIDTH-1:0] MSI_2_DLY;
+//wire [TEST_CNT_WIDTH-1:0] MSI_1_DLY, MSI_2_DLY;
+lfsr #(
+    .WIDTH  (TEST_CNT_WIDTH),
+    .POLY_N (10'hABB),
+    .SEED   (10'h34A)
+)
+lfsrinst0
+(
+    .clk            (clk),
+    .rstn           (rstn),
+    .lfsr_enable    (MSI_LED),
+    .lfsr_out       (MSI_1_DLY),
+    .lfsr_out_r     (MSI_2_DLY),
+    .lfsr_bit       ()
+);
+
+
 always@(posedge clk or negedge rstn) begin
     if(~rstn) begin
         MASTER_AXI_AWADDR   <= {32'b0,32'h0000_0000};
@@ -101,11 +149,13 @@ always@(posedge clk or negedge rstn) begin
         MASTER_AXI_WSTRB    <= {32{1'b0}};
         MASTER_AXI_WVALID   <= 1'b0;
         MASTER_AXI_BREADY   <= 1'b0;
+        delay_start         <= 1'b0;
+        rand_delay          <= MSI_1_DLY;
         state               <= IDLE;   
     end 
     else begin
         if (state == IDLE) begin
-            if (VIO_AXI_START_trig) begin
+            if (VIO_MSI_START) begin
                     MASTER_AXI_AWADDR <= VIO_MSI_ADDR; 
                     MASTER_AXI_WDATA <= VIO_MSI_DATA << (VIO_MSI_ADDR[5:0]<<3); 
                     MASTER_AXI_AWLEN <= 8'h0;
@@ -113,7 +163,7 @@ always@(posedge clk or negedge rstn) begin
                     MASTER_AXI_AWUSER <= {1'b1,31'b0, 32'b0, 24'h00_0002};
                     MASTER_AXI_WSTRB <=  2'b11 << VIO_MSI_ADDR[5:0];
                     MASTER_AXI_AWVALID <= 1'b1;
-                    MASTER_AXI_BREADY <= 1'b1;
+                    //MASTER_AXI_BREADY <= 1'b1;
                     state <= MSI_WRITE_1;
                 end
        end 
@@ -124,6 +174,7 @@ always@(posedge clk or negedge rstn) begin
             // end
 
             if (MASTER_AXI_AWVALID && MASTER_AXI_AWREADY) begin
+                MASTER_AXI_BREADY <= 1'b1;
                 MASTER_AXI_AWVALID <= 1'b0;
                 MASTER_AXI_WVALID <= 1'b1;
                 MASTER_AXI_WLAST <= 1'b1;
@@ -132,18 +183,28 @@ always@(posedge clk or negedge rstn) begin
                 MASTER_AXI_WVALID <= 1'b0;
                 MASTER_AXI_WLAST <= 1'b0;
 
-                state <= MSI_WRITE_2;
+                // state <= MSI_WRITE_2;
+                // MASTER_AXI_WDATA <= (VIO_MSI_DATA + 1'b1)<< (VIO_MSI_ADDR[5:0]*8); 
+                // MASTER_AXI_AWVALID <= 1'b1;
+            end
+             else if (MASTER_AXI_BVALID) begin
+                MASTER_AXI_BREADY <= 1'b0;
+                delay_start <=  1'b1;
+                rand_delay <= MSI_1_DLY;
+             end
+            //wait for random delay
+            if (delay_done_w) begin
+                delay_start <=  1'b0;
                 MASTER_AXI_WDATA <= (VIO_MSI_DATA + 1'b1)<< (VIO_MSI_ADDR[5:0]*8); 
                 MASTER_AXI_AWVALID <= 1'b1;
+                state <= MSI_WRITE_2;
             end
-            // else if (MASTER_AXI_BVALID) begin
-            //     MASTER_AXI_BREADY <= 1'b0;
-            //     state <= MSI_WRITE_2;
-            // end  
+
         end
 
         if (state == MSI_WRITE_2) begin
             if (MASTER_AXI_AWVALID && MASTER_AXI_AWREADY) begin
+                MASTER_AXI_BREADY <= 1'b1;
                 MASTER_AXI_AWVALID <= 1'b0;
                 MASTER_AXI_WVALID <= 1'b1;
                 MASTER_AXI_WLAST <= 1'b1;
@@ -151,12 +212,17 @@ always@(posedge clk or negedge rstn) begin
             else if (MASTER_AXI_WVALID && MASTER_AXI_WREADY) begin
                 MASTER_AXI_WVALID <= 1'b0;
                 MASTER_AXI_WLAST <= 1'b0;
+                // state <= IDLE;
+            end
+            else if (MASTER_AXI_BVALID) begin
+                MASTER_AXI_BREADY <= 1'b0;
+                delay_start <=  1'b1;
+                rand_delay <= MSI_2_DLY;
+            end  
+            if (delay_done_w) begin
+                delay_start <=  1'b0;
                 state <= IDLE;
             end
-            // else if (MASTER_AXI_BVALID) begin
-            //     MASTER_AXI_BREADY <= 1'b0;
-            //     state <= IDLE;
-            // end  
         end
     end
 end

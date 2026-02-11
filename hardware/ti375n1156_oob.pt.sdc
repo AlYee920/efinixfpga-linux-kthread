@@ -5,7 +5,7 @@
 
 # Efinity Interface Designer SDC
 # Version: 2025.2.288
-# Date: 2026-01-28 19:50
+# Date: 2026-02-11 13:55
 
 # Copyright (C) 2013 - 2025 Efinix Inc. All rights reserved.
 
@@ -22,10 +22,8 @@ create_clock -period 12.500 -name osc_inst1_CLKOUT [get_ports {osc_inst1_CLKOUT}
 create_clock -period 7.500 -name feedbackclk [get_ports {feedbackclk}]
 create_clock -period 7.917 -name axiclk [get_ports {axiclk}]
 create_clock -period 10.000 -name apbclk [get_ports {apbclk}]
-
 set_clock_groups -asynchronous -group {apbclk}
 set_clock_groups -asynchronous -group {axiclk}
-
 # GPIO Constraints
 ####################
 
@@ -52,6 +50,11 @@ set_input_delay -clock_fall -clock jtag_inst1_TCK -min 1.001 [get_ports {jtag_in
 # set_input_delay -clock_fall -clock jtag_inst1_TCK -min 0.475 [get_ports {jtag_inst1_RUNTEST}]
 # Create separate clock groups for JTAG clocks. Remove DRCK clock from the list below if it is not defined.
 # set_clock_groups -asynchronous -group {jtag_inst1_TCK jtag_inst1_DRCK}
+
+# HSIO GPIO Constraints
+#########################
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -max <MAX CALCULATION> [get_ports {MSI_LED}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -min <MIN CALCULATION> [get_ports {MSI_LED}]
 
 # PCIe Constraints
 ####################

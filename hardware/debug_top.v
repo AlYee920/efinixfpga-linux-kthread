@@ -3,7 +3,7 @@
 // Auto-generated Efinix JTAG debugger top module. Do not modify. 
 //
 
-`define DBG_MODULE_UUID _7f6988cd77d24e7a99ad405816e58298
+`define DBG_MODULE_UUID _18c9f192670140f8b8471b6ccd4e729b
 `define CONCAT(a,b) a``b
 `define DBG_MODULE_NAME(name) `CONCAT(name,`DBG_MODULE_UUID)
 
@@ -76,6 +76,7 @@ module edb_top (
     input  vio1_clk,
     input  [27:0] vio1_q0_INTERRUPT_SIDEBAND_SIGNALS,
     input  vio1_q0_LOCAL_INTERRUPT,
+    input  [31:0] vio1_MSI_RAND_DLY,
     output [63:0] vio1_AXI_ADDR,
     output [255:0] vio1_AXI_DATA,
     output [31:0] vio1_AXI_WSTRB,
@@ -159,7 +160,7 @@ module edb_top (
     `DBG_MODULE_NAME(edb_vio_top) #(
         .NUM_PROBE_IN           ( 11 ),
         .NUM_PROBE_OUT          ( 2 ),
-        .UUID           ( 128'h83113025e8ac4aefac278ea7eee891d1 ),
+        .UUID           ( 128'h2736396a5ec8488f810e523fd14e7291 ),
         .PROBE_IN0_WIDTH        ( 6 ),
         .PROBE_IN1_WIDTH        ( 2 ),
         .PROBE_IN2_WIDTH        ( 2 ),
@@ -329,7 +330,7 @@ module edb_top (
         .TRIGOUT_EN         ( 0 ),
         .INPUT_PIPE_STAGES      ( 1 ),
         .CAPTURE_CONTROL    ( 0 ),
-        .UUID   ( 128'hb960fdabbcd3435d9d2c4ab30b400444 ),
+        .UUID   ( 128'hc92073b62dd143e29e84fc47f707df19 ),
         .CNDTNL_STRG_EN     ( 0 ),
         .PROBE0_WIDTH       ( 64 ),
         .PROBE0_TYPE        ( 1 ),
@@ -457,11 +458,12 @@ module edb_top (
     );
 
     `DBG_MODULE_NAME(edb_vio_top) #(
-        .NUM_PROBE_IN           ( 2 ),
+        .NUM_PROBE_IN           ( 3 ),
         .NUM_PROBE_OUT          ( 7 ),
-        .UUID           ( 128'h463d4cec20794239b715e02d34216111 ),
+        .UUID           ( 128'h5420a3d32d724cdf981fed5a278cb7b4 ),
         .PROBE_IN0_WIDTH        ( 28 ),
         .PROBE_IN1_WIDTH        ( 1 ),
+        .PROBE_IN2_WIDTH        ( 32 ),
         .PROBE_OUT0_WIDTH       ( 64 ),
         .PROBE_OUT1_WIDTH       ( 256 ),
         .PROBE_OUT2_WIDTH       ( 32 ),
@@ -495,7 +497,7 @@ module edb_top (
         .clk                ( vio1_clk ),
         .probe_in0          ( vio1_q0_INTERRUPT_SIDEBAND_SIGNALS ),
         .probe_in1          ( vio1_q0_LOCAL_INTERRUPT ),
-        .probe_in2          ( 1'b0 ),
+        .probe_in2          ( vio1_MSI_RAND_DLY ),
         .probe_in3          ( 1'b0 ),
         .probe_in4          ( 1'b0 ),
         .probe_in5          ( 1'b0 ),
@@ -626,7 +628,7 @@ module edb_top (
     `DBG_MODULE_NAME(edb_vio_top) #(
         .NUM_PROBE_IN           ( 1 ),
         .NUM_PROBE_OUT          ( 4 ),
-        .UUID           ( 128'h94bb29eb93d6494cb9fc4b1a393720bc ),
+        .UUID           ( 128'hd9e757507d0a4baeb0696743a9d70007 ),
         .PROBE_IN0_WIDTH        ( 32 ),
         .PROBE_OUT0_WIDTH       ( 1 ),
         .PROBE_OUT1_WIDTH       ( 24 ),

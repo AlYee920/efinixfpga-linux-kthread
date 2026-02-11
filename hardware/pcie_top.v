@@ -186,6 +186,7 @@ input   wire            q0_REG_ACCESS_CLK_SHUTOFF      ,
 // input   wire [3:0]      q0_CONFIG_WRITE_DATA_PAR       , q2_CONFIG_WRITE_DATA_PAR,
 // input   wire            q0_CONFIG_WRITE_RECEIVED       , q2_CONFIG_WRITE_RECEIVED,
 
+output wire MSI_LED,
 //JTAG
 input   wire            jtag_inst1_DRCK,
 input   wire            jtag_inst1_RESET,
@@ -282,9 +283,10 @@ wire [31:0]     VIO_AXI_WSTRB;
 //AUTOMATED INTERRUPT TEST FOR MSI TRIGGERED READ
 wire MSI_TEST_INIT;
 wire MSI_TEST_TRIG;
-reg [7:0] MSI_TEST_CNT;
+reg [31:0] MSI_TEST_CNT;
+wire [31:0] MSI_RAND_DLY;
 
-assign MSI_TEST_TRIG = MSI_TEST_CNT[7];
+assign MSI_TEST_TRIG = MSI_TEST_CNT[24];
 always@(posedge axiclk or negedge MSI_TEST_INIT) begin
     if (~MSI_TEST_INIT) begin
         MSI_TEST_CNT <= 8'h0;
@@ -393,7 +395,10 @@ msi_test_axi_master inst0
     
     .VIO_MSI_ADDR        (VIO_AXI_ADDR[31:0] ),
     .VIO_MSI_DATA        (VIO_AXI_DATA[15:0] ),
-    .VIO_MSI_START       (VIO_AXI_START | MSI_TEST_TRIG)
+    .VIO_MSI_START       (VIO_AXI_START | MSI_TEST_TRIG),
+    
+    .MSI_LED            (MSI_LED),
+    .MSI_1_DLY       (MSI_RAND_DLY)
 );
 `endif 
 //APB INBOUND CONFIGURATOR
@@ -560,6 +565,7 @@ edb_top edb_top_inst(
     .vio1_AXI_WSTRB                       (VIO_AXI_WSTRB),
     .vio1_VIO_AXI_AWUSER                  (VIO_AXI_AWUSER),
     .vio1_MSI_TEST_INIT                   (MSI_TEST_INIT),
+    .vio1_MSI_RAND_DLY                    (MSI_RAND_DLY),  
     
     .la0_clk                  (axiclk),
     .la0_q0_TARGET_AXI_AWADDR (q0_TARGET_AXI_AWADDR ),

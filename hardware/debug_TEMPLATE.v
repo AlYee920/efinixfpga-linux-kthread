@@ -62,6 +62,7 @@ edb_top edb_top_inst (
     .vio1_clk       ( $INSERT_YOUR_CLOCK_NAME ),
     .vio1_q0_INTERRUPT_SIDEBAND_SIGNALS( q0_INTERRUPT_SIDEBAND_SIGNALS ),
     .vio1_q0_LOCAL_INTERRUPT( q0_LOCAL_INTERRUPT ),
+    .vio1_MSI_RAND_DLY( MSI_RAND_DLY ),
     .vio1_AXI_ADDR  ( AXI_ADDR ),
     .vio1_AXI_DATA  ( AXI_DATA ),
     .vio1_AXI_WSTRB ( AXI_WSTRB ),

@@ -44,7 +44,7 @@ static irqreturn_t msi_one_read(int irq, void *dev_id)
 static irqreturn_t msi_burst_write(int irq, void *dev_id)
 {
 	u32 i;
-	for (i = 0; i < 4 && !kthread_should_stop(); i++)
+	for (i = 0; i < 4; i++)
 	{
 		iowrite32(g_val, selected_bar + ((g_val * 0x20)&0xfffff));
 		g_val++;
@@ -198,8 +198,8 @@ static int __init my_init(void)
 	}
 
 	irq_vector_read = pci_irq_vector(ptr, 1);
-	//ret = request_irq(irq_vector_read, msi_one_read, IRQF_ONESHOT, "efx_pcie_msi_read", ptr);
-	ret = request_threaded_irq(irq_vector_read, NULL, msi_one_read, IRQF_ONESHOT, "efx_pcie_msi_read", ptr);
+	ret = request_irq(irq_vector_read, msi_one_read, IRQF_SHARED, "efx_pcie_msi_read", ptr);
+	//ret = request_threaded_irq(irq_vector_read, NULL, msi_one_read, IRQF_ONESHOT, "efx_pcie_msi_read", ptr);
 	if (ret)
 	{
 		pr_err("efx_pcie_msi_read: request_irq failed : %d\n", ret);
@@ -208,8 +208,8 @@ static int __init my_init(void)
 	pr_info("efx_pcie: msi_one_read enabled on IRQ %d\n", irq_vector_read);
 
 	irq_vector_write = pci_irq_vector(ptr, 0);
-	//ret = request_irq(irq_vector_write, msi_burst_write, IRQF_ONESHOT, "efx_pcie_msi_write", ptr);
-	ret = request_threaded_irq(irq_vector_write, NULL, msi_burst_write, IRQF_ONESHOT, "efx_pcie_msi_write", ptr);
+	ret = request_irq(irq_vector_write, msi_burst_write, IRQF_SHARED, "efx_pcie_msi_write", ptr);
+	//ret = request_threaded_irq(irq_vector_write, NULL, msi_burst_write, IRQF_ONESHOT, "efx_pcie_msi_write", ptr);
 	if (ret)
 	{
 		pr_err("efx_pcie_msi_write: request_irq failed : %d\n", ret);
